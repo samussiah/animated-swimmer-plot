@@ -10,8 +10,8 @@ export default {
     playPause,
     stepBackward,
     stepForward,
-    speedDown,
-    speedUp,
+    //speedDown,
+    //speedUp,
     reset,
     range
 }

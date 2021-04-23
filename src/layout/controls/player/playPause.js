@@ -7,12 +7,15 @@ export default function playPause(form) {
             ? 'Pause animation'
             : 'Play animation'
         );
-    const icon = fas[this.settings.play
-        ? 'faPause'
-        : 'faPlay'
-    ].icon;
-
-    const path = this.util.addIcon.call(this, button, icon);
+    const path = this.util.addIcon.call(
+        this,
+        button,
+        fas[
+            this.settings.play
+                ? 'faPause'
+                : 'faPlay'
+        ].icon
+    );
 
     button.on('click', () => {
         console.log(this.settings.play ? 'pause' : 'play');
@@ -21,8 +24,9 @@ export default function playPause(form) {
             ? 'Pause animation'
             : 'Play animation'
         );
-        const icon = fas[this.settings.play ? 'faPause' : 'faPlay'].icon;
-        path.attr('d', icon[4]);
+        path.attr('d', fas[this.settings.play ? 'faPause' : 'faPlay'].icon[4]);
         // pause or resume animation
     });
+
+    return button;
 }

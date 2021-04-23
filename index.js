@@ -10,8 +10,8 @@
       var id = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : function (d, i) {
         return i;
       };
-      return data ? parent.selectAll("".concat(tagName, ".atm-").concat(name, ".atm-").concat(tagName)).data(data, id).join(tagName).classed("atm-".concat(name, " atm-").concat(tagName), true) // multiple elements
-      : parent.append(tagName).classed("atm-".concat(name, " atm-").concat(tagName), true); // single element
+      return data ? parent.selectAll("".concat(tagName, ".asp-").concat(name, ".asp-").concat(tagName)).data(data, id).join(tagName).classed("asp-".concat(name, " asp-").concat(tagName), true) // multiple elements
+      : parent.append(tagName).classed("asp-".concat(name, " asp-").concat(tagName), true); // single element
     }
 
     function addIcon(parent, icon) {
@@ -30,24 +30,35 @@
 
     function settings() {
       return {
+        // data mappings
+        id_var: 'USUBJID',
+        timepoint_var: 'RSDY',
+        result_var: 'RSSTRESC',
+        visit_var: 'VISIT',
+        visit_order_var: 'VISITNUM',
+        // controls
+        view: 'overall',
+        // ['overall', 'current-response', 'progression-free']
         play: true,
         timepoint: 0,
         timepointUnit: 'day',
-        timepointMin: 0,
-        // TODO: needs to be data-driven
-        timepointMax: 100,
-        // TODO: needs to be data-driven
+        timepointMin: null,
+        timepointMax: null,
         speed: 250,
         speedFactor: 50,
-        view: 'overall',
-        // ['overall', 'current-response', 'progression-free']
+        // dimensions
+        dimensions: {
+          width: null,
+          height: null
+        },
         margin: {
           top: 40,
           right: 100,
           bottom: 20,
           left: 0
         },
-        buttonSize: 50
+        buttonSize: 50,
+        barSize: null
       };
     }
 
@@ -98,6 +109,147 @@
       }
 
       return target;
+    }
+
+    function _slicedToArray(arr, i) {
+      return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+    }
+
+    function _toConsumableArray(arr) {
+      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    }
+
+    function _arrayWithoutHoles(arr) {
+      if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+    }
+
+    function _arrayWithHoles(arr) {
+      if (Array.isArray(arr)) return arr;
+    }
+
+    function _iterableToArray(iter) {
+      if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+    }
+
+    function _iterableToArrayLimit(arr, i) {
+      var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]);
+
+      if (_i == null) return;
+      var _arr = [];
+      var _n = true;
+      var _d = false;
+
+      var _s, _e;
+
+      try {
+        for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+          _arr.push(_s.value);
+
+          if (i && _arr.length === i) break;
+        }
+      } catch (err) {
+        _d = true;
+        _e = err;
+      } finally {
+        try {
+          if (!_n && _i["return"] != null) _i["return"]();
+        } finally {
+          if (_d) throw _e;
+        }
+      }
+
+      return _arr;
+    }
+
+    function _unsupportedIterableToArray(o, minLen) {
+      if (!o) return;
+      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+      var n = Object.prototype.toString.call(o).slice(8, -1);
+      if (n === "Object" && o.constructor) n = o.constructor.name;
+      if (n === "Map" || n === "Set") return Array.from(o);
+      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    }
+
+    function _arrayLikeToArray(arr, len) {
+      if (len == null || len > arr.length) len = arr.length;
+
+      for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+      return arr2;
+    }
+
+    function _nonIterableSpread() {
+      throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+
+    function _nonIterableRest() {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+
+    function _createForOfIteratorHelper(o, allowArrayLike) {
+      var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+
+      if (!it) {
+        if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+          if (it) o = it;
+          var i = 0;
+
+          var F = function () {};
+
+          return {
+            s: F,
+            n: function () {
+              if (i >= o.length) return {
+                done: true
+              };
+              return {
+                done: false,
+                value: o[i++]
+              };
+            },
+            e: function (e) {
+              throw e;
+            },
+            f: F
+          };
+        }
+
+        throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+      }
+
+      var normalCompletion = true,
+          didErr = false,
+          err;
+      return {
+        s: function () {
+          it = it.call(o);
+        },
+        n: function () {
+          var step = it.next();
+          normalCompletion = step.done;
+          return step;
+        },
+        e: function (e) {
+          didErr = true;
+          err = e;
+        },
+        f: function () {
+          try {
+            if (!normalCompletion && it.return != null) it.return();
+          } finally {
+            if (didErr) throw err;
+          }
+        }
+      };
+    }
+
+    function getDimensions(container) {
+      var width = container.node().clientWidth;
+      var height = container.node().clientHeight;
+      return {
+        width: width,
+        height: height
+      };
     }
 
     /*!
@@ -6123,98 +6275,79 @@
       var _this = this;
 
       var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', this.settings.play ? 'Pause animation' : 'Play animation');
-      var icon = _iconsCache[this.settings.play ? 'faPause' : 'faPlay'].icon;
-      var path = this.util.addIcon.call(this, button, icon);
+      var path = this.util.addIcon.call(this, button, _iconsCache[this.settings.play ? 'faPause' : 'faPlay'].icon);
       button.on('click', function () {
         console.log(_this.settings.play ? 'pause' : 'play');
         _this.settings.play = !_this.settings.play;
         button.attr('title', _this.settings.play ? 'Pause animation' : 'Play animation');
-        var icon = _iconsCache[_this.settings.play ? 'faPause' : 'faPlay'].icon;
-        path.attr('d', icon[4]); // pause or resume animation
+        path.attr('d', _iconsCache[_this.settings.play ? 'faPause' : 'faPlay'].icon[4]); // pause or resume animation
       });
+      return button;
+    }
+
+    function updateTimepoint(timepoint) {
+      this.settings.timepoint = timepoint;
+      this.controls.range.input.property('value', timepoint);
+      this.controls.range.output.text("".concat(this.settings.timepointUnit, " ").concat(this.settings.timepoint));
+      console.log(this.settings.timepoint);
     }
 
     function stepBackward(form) {
       var _this = this;
 
       var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', 'Step backward one timepoint');
-      var icon = _iconsCache.faStepBackward.icon;
-      this.util.addIcon.call(this, button, icon);
+      this.util.addIcon.call(this, button, _iconsCache.faStepBackward.icon);
       button.on('click', function () {
-        _this.settings.timepoint--; // TODO: disable button at minimum timepoint
-
-        console.log(_this.settings.timepoint); // pause animation and proceed to previous timepoint
+        updateTimepoint.call(_this, _this.settings.timepoint - 1); // TODO: disable button at maximum timepoint
+        // pause animation and proceed to previous timepoint
       });
+      return button;
     }
 
     function stepForward(form) {
       var _this = this;
 
       var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', 'Step forward one timepoint');
-      var icon = _iconsCache.faStepForward.icon;
-      this.util.addIcon.call(this, button, icon);
+      this.util.addIcon.call(this, button, _iconsCache.faStepForward.icon);
       button.on('click', function () {
-        _this.settings.timepoint++; // TODO: disable button at maximum timepoint
-
-        console.log(_this.settings.timepoint); // pause animation and proceed to next timepoint
+        updateTimepoint.call(_this, _this.settings.timepoint + 1); // TODO: disable button at maximum timepoint
+        // pause animation and proceed to next timepoint
       });
-    }
-
-    function speedDown(form) {
-      var _this = this;
-
-      var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', 'Decrease animation speed');
-      var icon = _iconsCache.faChevronDown.icon;
-      this.util.addIcon.call(this, button, icon);
-      button.on('click', function () {
-        _this.settings.speed += _this.settings.speedFactor;
-        console.log(_this.settings.speed); // animation continues at a slower pace
-      });
-    }
-
-    function speedUp(form) {
-      var _this = this;
-
-      var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', 'Increase animation speed');
-      var icon = _iconsCache.faChevronUp.icon;
-      this.util.addIcon.call(this, button, icon);
-      button.on('click', function () {
-        _this.settings.speed = _this.settings.speed > _this.settings.speedFactor ? _this.settings.speed - _this.settings.speedFactor : _this.settings.speed; // TODO: disable button at minimum speed
-
-        console.log(_this.settings.speed); // animation continues at a quicker pace
-      });
+      return button;
     }
 
     function reset(form) {
       var _this = this;
 
       var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', 'Restart animation');
-      var icon = _iconsCache.faRedo.icon;
-      this.util.addIcon.call(this, button, icon);
+      this.util.addIcon.call(this, button, _iconsCache.faRedo.icon);
       button.on('click', function () {
-        _this.settings.timepoint = _this.settings.timepointMin;
-        console.log(_this.settings.timepoint); // animation resets to initial timepoint
+        updateTimepoint.call(_this, _this.settings.timepointMin); // TODO: disable button at maximum timepoint
+        // animation resets to initial timepoint
       });
+      return button;
     }
 
     function range(form) {
       var main = this;
       var label = this.util.addElement('label', form, 'label').style('display', 'flex').style('align-items', 'center');
-      var input = this.util.addElement('input', label, 'input').attr('type', 'range').attr('min', this.settings.timepointMin).attr('max', this.settings.timepointMax).attr('value', this.settings.timepoint).attr('step', 1);
-      var output = this.util.addElement('output', label, 'output').text("".concat(this.settings.timepointUnit, " ").concat(this.settings.timepoint));
+      var input = this.util.addElement('input', label, 'input').attr('type', 'range').attr('step', 1);
+      var output = this.util.addElement('output', label, 'output');
       input.on('change', function () {
-        main.settings.timepoint = this.value;
-        output.text("".concat(main.settings.timepointUnit, " ").concat(main.settings.timepoint));
-        console.log(main.settings.timepoint); // transition animation to selected timepoint
+        updateTimepoint.call(main, this.value); // transition animation to selected timepoint
       });
+      return {
+        input: input,
+        output: output
+      };
     }
 
     var playerFunctions = {
       playPause: playPause,
       stepBackward: stepBackward,
       stepForward: stepForward,
-      speedDown: speedDown,
-      speedUp: speedUp,
+      //speedDown,
+      //speedUp,
       reset: reset,
       range: range
     };
@@ -6222,35 +6355,342 @@
     function player(controls) {
       var container = this.util.addElement('player', controls);
       var form = this.util.addElement('player__form', container, 'form');
+      var player = {};
 
       for (var playerFunction in playerFunctions) {
-        playerFunctions[playerFunction].call(this, form);
+        player[playerFunction] = playerFunctions[playerFunction].call(this, form);
       }
+
+      return player;
     }
 
     function view(controls) {}
 
-    function controls(main) {
-      var container = this.util.addElement(controls, main);
-      var player$1 = player.call(this, container);
-      var view$1 = view.call(this, container);
+    function controls$1(main) {
+      var controls = this.util.addElement('controls', main);
+      var player$1 = player.call(this, controls);
+      var view$1 = view.call(this, controls);
       return {
-        container: container,
+        controls: controls,
         player: player$1,
         view: view$1
       };
     }
 
-    function layout() {
-      var container = this.util.addElement('main', d3.select(this.element));
-      var controls$1 = controls.call(this, container); //this.util.addElement('controls', main);
-      //const charts = layoutCharts.call(this, main);
-      //getDimensions.call(this, charts); // determine widths of DOM elements based on width of main container
-      //window.addEventListener('resize', resize.bind(this));
+    function canvas(main) {
+      var canvas = this.util.addElement('canvas', main);
+      var svg = this.util.addElement('svg', canvas, 'svg').attr('width', this.settings.dimensions.width).attr('height', this.settings.dimensions.height);
+      var g = this.util.addElement('g', svg, 'g');
+      return {
+        canvas: canvas,
+        svg: svg,
+        g: g
+      };
+    }
 
-      return _objectSpread2({
-        container: container
-      }, controls$1);
+    function resize() {
+      this.settings.dimensions = getDimensions.call(this, this.layout.main);
+      this.layout.svg.attr('width', this.settings.dimensions.width).attr('height', this.settings.dimensions.height);
+    }
+
+    function layout() {
+      var main = this.util.addElement('main', d3.select(this.element));
+      var dimensions = getDimensions.call(this, main);
+      this.settings.width = dimensions.width;
+      this.settings.height = dimensions.height;
+      var controls = controls$1.call(this, main);
+      var canvas$1 = canvas.call(this, main);
+      window.addEventListener('resize', resize.bind(this));
+      return _objectSpread2(_objectSpread2({
+        main: main
+      }, controls), canvas$1);
+    }
+
+    function mutate(data) {
+      var _this = this;
+
+      var mutated = data.map(function (d) {
+        var datum = {};
+
+        var _iterator = _createForOfIteratorHelper(Object.keys(_this.settings).filter(function (key) {
+          return /_var$/.test(key);
+        })),
+            _step;
+
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var setting = _step.value;
+            var variable = setting.replace(/_var$/, '');
+            datum[variable] = ['timepoint', 'visit_order'].includes(variable) ? +d[_this.settings[setting]] : d[_this.settings[setting]];
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
+        }
+
+        datum.result_order = datum.result === 'PD' ? -1 : datum.result === 'NE' ? 0 : datum.result === 'SD' ? 1 : datum.result === 'PR' ? 2 : datum.result === 'CR' ? 3 : null;
+        return datum;
+      });
+      return mutated;
+    }
+
+    function currentResponse(states) {
+      var total_duration = 0;
+      var currentResponse = states.map(function (state) {
+        return _objectSpread2({}, state);
+      }).reverse().map(function (state, i, states) {
+        if (i === 0) {
+          state.start_timepoint = 1;
+        } else {
+          state.duration = state.duration;
+          total_duration -= state.duration;
+          state.start_timepoint = total_duration;
+        }
+
+        return state;
+      });
+      return currentResponse;
+    }
+
+    function interpolate(data) {
+      var interpolated = d3.rollup(data, function (group) {
+        var _long = [];
+        group.sort(function (a, b) {
+          return a.timepoint - b.timepoint;
+        });
+        var state;
+        var state_duration;
+        var states = [];
+        var total_duration = 0;
+        var sequence = 0;
+        d3.pairs(group).forEach(function (pair, i, pairs) {
+          // Update state initially and when state changes.
+          if (i === 0 || pair[0].result !== pairs[i - 1][0].result) {
+            state = pair[0].result;
+            state_duration = 0;
+            states.push({
+              state: state,
+              // current state
+              start_timepoint: total_duration,
+              // starting timepoint of current state,
+              duration: 0,
+              // duration of current state
+              sequence: sequence
+            }); // TODO: retain the total duration up to the current state
+
+            sequence++;
+          }
+
+          var duration = pair[1].timepoint - pair[0].timepoint || 1; // Define an item for each day between the current timepoint (pair[0]) and the next timepoint (pair[1]).
+
+          for (var _i = 0; _i < duration; _i++) {
+            var datum = _objectSpread2({}, pair[0]);
+
+            datum.timepoint = datum.timepoint + _i; // Increment timepoint.
+
+            datum.duration = state_duration + _i + 1; // Increment duration of current state.
+
+            datum.total_duration = total_duration + _i + 1; // Increment total duration.
+
+            states[states.length - 1].duration++; // Increase duration of the current state.
+
+            datum.states = states.map(function (state) {
+              return _objectSpread2({}, state);
+            });
+            datum.statesCurrentResponse = currentResponse(datum.states);
+            datum.state = datum.result;
+            datum.state_order = datum.result_order;
+
+            _long.push(datum);
+          } // Add difference between timepoints to duration.
+
+
+          state_duration = state_duration + duration;
+          total_duration += duration;
+        });
+        return _long;
+      }, function (d) {
+        return d.id;
+      });
+
+      var flattened = _toConsumableArray(interpolated.values()).flatMap(function (d) {
+        return d;
+      });
+
+      return flattened;
+    }
+
+    function groupByTimepoint(interpolated, finalTimepoint) {
+      var timepoints = d3.rollups(interpolated, function (group) {
+        var groupIds = new Set(group.map(function (d) {
+          return d.id;
+        }));
+        finalTimepoint.forEach(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+              key = _ref2[0],
+              value = _ref2[1];
+
+          if (groupIds.has(key) === false) group.push(_objectSpread2({}, value));
+        }); // In current state view, sort by:
+        // 1. current state
+        // 2. descending duration of current state
+        // 3. descending total duration
+        // 4. ID
+
+        group.sort(function (a, b) {
+          var state_order_diff = b.state_order - a.state_order;
+          var duration_diff = b.duration - a.duration; // sort the earlier responders first
+
+          var total_duration_diff = a.total_duration - b.total_duration;
+          var id_diff = a.id < b.id ? -1 : 1;
+          return state_order_diff || duration_diff || total_duration_diff || id_diff;
+        }).forEach(function (d, i) {
+          d.rankCurrent = i;
+        }); // In overall view, sort by:
+        //   1. current state
+        //   3. descending total duration
+        //   2. descending duration of current state
+        //   4. ID
+
+        group.sort(function (a, b) {
+          var state_order_diff = b.state_order - a.state_order;
+          var total_duration_diff = b.total_duration - a.total_duration;
+          var duration_diff = b.duration - a.duration;
+          var id_diff = a.id < b.id ? -1 : 1;
+          return state_order_diff || total_duration_diff || duration_diff || id_diff;
+        }).forEach(function (d, i) {
+          d.rankOverall = i; // rank positions IDs along y-axis
+        });
+        return group;
+      }, function (d) {
+        return d.timepoint;
+      });
+      return timepoints;
+    }
+
+    function data(data) {
+      var mutated = mutate.call(this, data);
+      var interpolated = interpolate.call(this, mutated);
+      var finalTimepoint = d3.rollups(interpolated, function (group) {
+        return group[group.length - 1];
+      }, function (d) {
+        return d.id;
+      });
+      var timepoints = groupByTimepoint.call(this, interpolated, finalTimepoint);
+      return {
+        data: data,
+        mutated: mutated,
+        interpolated: interpolated,
+        finalTimepoint: finalTimepoint,
+        timepoints: timepoints
+      };
+    }
+
+    function controls() {
+      var controls = _objectSpread2(_objectSpread2({
+        container: this.layout.controls,
+        player: this.layout.player
+      }, this.layout.player), {}, {
+        view: this.layout.view
+      }); // Update settings.
+
+
+      this.settings.timepointMin = d3.min(this.data.timepoints, function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            d = _ref2[0];
+
+        return d;
+      });
+      this.settings.timepointMax = d3.max(this.data.timepoints, function (_ref3) {
+        var _ref4 = _slicedToArray(_ref3, 1),
+            d = _ref4[0];
+
+        return d;
+      });
+      this.settings.timepoint = this.settings.timepoint !== undefined && this.settings.timepoint >= this.settings.timepointMin && this.settings.timepoint <= this.settings.timepointMax ? this.settings.timepoint : this.settings.timepointMin; // Update controls.
+
+      controls.range.input.attr('min', this.settings.timepointMin).attr('max', this.settings.timepointMax).attr('value', this.settings.timepoint);
+      controls.range.output.text("".concat(this.settings.timepointUnit, " ").concat(this.settings.timepoint));
+      return controls;
+    }
+
+    function id() {
+      var set = new Set(this.data.mutated.map(function (d) {
+        return d.id;
+      }));
+      return set;
+    }
+
+    function visit() {
+      var set = d3.rollups(this.data.mutated.filter(function (d) {
+        return !/Unscheduled/.test(d.visit) && d.timepoint > 1;
+      }), function (group) {
+        return d3.median(group, function (d) {
+          return d.timepoint;
+        });
+      }, function (d) {
+        return d.visit;
+      });
+      return set;
+    }
+
+    function result() {
+      var set = _toConsumableArray(new Set(this.data.mutated.map(function (d) {
+        return "".concat(d.result_order, "|").concat(d.result);
+      })).values()).map(function (d) {
+        return [+d.split('|')[0], d.split('|')[1]];
+      }).sort(function (_ref, _ref2) {
+        var _ref3 = _slicedToArray(_ref, 1),
+            a = _ref3[0];
+
+        var _ref4 = _slicedToArray(_ref2, 1),
+            b = _ref4[0];
+
+        return a - b;
+      }).map(function (_ref5) {
+        var _ref6 = _slicedToArray(_ref5, 2),
+            result = _ref6[1];
+
+        return result;
+      });
+
+      return set;
+    }
+
+    function set() {
+      return {
+        id: id.call(this),
+        visit: visit.call(this),
+        result: result.call(this)
+      };
+    }
+
+    function x() {
+      return d3.scaleLinear().domain([0, 1]).range([this.settings.margin.left, this.settings.dimensions.width - this.settings.margin.right]);
+    }
+
+    function y() {
+      return d3.scaleBand().domain(d3.range(this.set.id.size + 1)).rangeRound([this.settings.margin.top, this.settings.margin.top + this.settings.barSize * (this.set.id.size + 1 + 0.1)]) //.rangeRound([margin.top, height - margin.bottom])
+      .padding(0.1);
+    }
+
+    function color() {
+      return d3.scaleOrdinal().domain(this.set.result).range(['#d6604d', '#bdbdbd', '#92c5de', '#4393c3', '#2166ac']);
+    }
+
+    function scale() {
+      return {
+        x: x.call(this),
+        y: y.call(this),
+        color: color.call(this)
+      };
+    }
+
+    function init() {
+      this.set = set.call(this);
+      this.settings.barSize = this.settings.dimensions.height / this.set.id.size;
+      this.scale = scale.call(this);
     }
 
     function animatedSwimmerPlot(_data_) {
@@ -6259,12 +6699,14 @@
       var _settings_ = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       var fdg = {
-        data: _data_,
         element: _element_,
         settings: Object.assign(settings(), _settings_),
         util: util
       };
       fdg.layout = layout.call(fdg);
+      fdg.data = data.call(fdg, _data_);
+      fdg.controls = controls.call(fdg);
+      init.call(fdg);
       return fdg;
     }
 

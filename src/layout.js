@@ -4,16 +4,18 @@ import layoutCanvas from './layout/canvas';
 import resize from './layout/resize';
 
 export default function layout() {
-    const container = this.util.addElement('main', d3.select(this.element));
-    const controls = layoutControls.call(this, container); //this.util.addElement('controls', main);
-    //const charts = layoutCharts.call(this, main);
-    //getDimensions.call(this, charts); // determine widths of DOM elements based on width of main container
+    const main = this.util.addElement('main', d3.select(this.element));
+    const dimensions = getDimensions.call(this, main);
+    this.settings.width = dimensions.width;
+    this.settings.height = dimensions.height;
+    const controls = layoutControls.call(this, main);
+    const canvas = layoutCanvas.call(this, main);
 
-    //window.addEventListener('resize', resize.bind(this));
+    window.addEventListener('resize', resize.bind(this));
 
     return {
-        container,
+        main,
         ...controls,
-        //charts,
+        ...canvas,
     };
 }
