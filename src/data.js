@@ -7,8 +7,8 @@ export default function data(data) {
     const interpolated = interpolate.call(this, mutated);
     const finalTimepoint = d3.rollups(
         interpolated,
-        group => group[group.length - 1],
-        d => d.id
+        (group) => group[group.length - 1],
+        (d) => d.id
     );
     const timepoints = groupByTimepoint.call(this, interpolated, finalTimepoint);
 

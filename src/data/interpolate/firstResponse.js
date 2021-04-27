@@ -2,7 +2,7 @@ export default function firstResponse(states) {
     let total_duration = 0;
 
     const firstResponse = states
-        .map(state => ({ ...state }))
+        .map((state) => ({ ...state }))
         .reverse()
         .map((state, i, states) => {
             if (i === 0) {

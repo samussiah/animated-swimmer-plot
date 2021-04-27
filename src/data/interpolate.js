@@ -3,7 +3,7 @@ import currentResponse from './interpolate/currentResponse';
 export default function interpolate(data) {
     const interpolated = d3.rollup(
         data,
-        group => {
+        (group) => {
             const long = [];
 
             group.sort((a, b) => a.timepoint - b.timepoint);
@@ -23,7 +23,7 @@ export default function interpolate(data) {
                         state, // current state
                         start_timepoint: total_duration, // starting timepoint of current state,
                         duration: 0, // duration of current state
-                        sequence
+                        sequence,
                     }); // TODO: retain the total duration up to the current state
                     sequence++;
                 }
@@ -38,8 +38,8 @@ export default function interpolate(data) {
                     datum.duration = state_duration + i + 1; // Increment duration of current state.
                     datum.total_duration = total_duration + i + 1; // Increment total duration.
                     states[states.length - 1].duration++; // Increase duration of the current state.
-                    datum.states = states.map(state => ({ ...state }));
-                    datum.statesCurrentResponse = currentResponse(datum.states);
+                    datum.statesOverallSurvival = states.map((state) => ({ ...state }));
+                    datum.statesCurrentResponse = currentResponse(datum.statesOverallSurvival);
                     datum.state = datum.result;
                     datum.state_order = datum.result_order;
 
@@ -53,10 +53,10 @@ export default function interpolate(data) {
 
             return long;
         },
-        d => d.id
+        (d) => d.id
     );
 
-  const flattened = [...interpolated.values()].flatMap(d => d);
+    const flattened = [...interpolated.values()].flatMap((d) => d);
 
-  return flattened;
+    return flattened;
 }

@@ -1,46 +1,44 @@
 export default function axis() {
-  const gTop = this.layout.svg
-        .append("g").attr("transform", `translate(0,${this.settings.margin.top})`);
-  const gBottom = this.layout.svg
-    .append("g")
-    .attr("transform", `translate(0,${this.settings.height - this.settings.margin.bottom + 3})`);
+    //this.layout.svg
+    //    .append('text')
+    //    .style('font', `bold 12px var(--sans-serif)`)
+    //    .style('font-variant-numeric', 'tabular-nums')
+    //    .attr('alignment-baseline', 'baseline')
+    //    .style('font', 'bold 12px var(--sans-serif)')
+    //    .style('font-variant-numeric', 'tabular-nums')
+    //    .attr('text-anchor', 'start')
+    //    .attr('x', this.settings.margin.left + 6)
+    //    .attr('y', this.settings.margin.top - 6)
+    //    .text(`ID`);
 
-  svg
-    .append("text")
-    .style("font", `bold 12px var(--sans-serif)`)
-    .style("font-variant-numeric", "tabular-nums")
-    .attr('alignment-baseline', 'baseline')
-    .style("font", "bold 12px var(--sans-serif)")
-    .style("font-variant-numeric", "tabular-nums")
-    .attr("text-anchor", "start")
-    .attr("x", 6)
-    .attr("y", margin.top - 6)
-    .text(`ID`);
+    const xAxisTop = d3
+        .axisTop(this.scale.x)
+        .ticks(this.settings.width / 160)
+        .tickSizeOuter(0)
+        .tickSizeInner(
+            -(this.settings.height - this.settings.margin.top - this.settings.margin.bottom)
+        );
 
-  const axisTop = d3
-    .axisTop(x)
-    .ticks(width / 160)
-    .tickSizeOuter(0)
-    .tickSizeInner(-barSize * (N + y.padding()));
+    const xAxisBottom = d3
+        .axisBottom(this.scale.x)
+        .ticks(this.settings.width / 160)
+        .tickSizeOuter(0)
+        .tickSizeInner(0);
 
-  const axisBottom = d3
-    .axisBottom(x)
-    .ticks(width / 160)
-    .tickSizeOuter(0)
-    .tickSizeInner(0);
+    return (_, transition) => {
+        this.layout.xAxisTop.transition(transition).call(xAxisTop);
+        this.layout.xAxisBottom.transition(transition).call(xAxisBottom);
 
-  return (_, transition) => {
-    gTop.transition(transition).call(axisTop);
-    gBottom.transition(transition).call(axisBottom);
-    if (view === 'Total Duration') {
-      gTop.select(".tick:first-of-type text").remove();
-      gBottom.select(".tick:first-of-type text").remove();
-    }
-    gTop
-      .selectAll(".tick:not(:first-of-type) line")
-      .attr("stroke", "#999")
-      .attr('stroke-opacity', .6);
-    gTop.select(".domain").remove();
-    gBottom.select(".domain").remove();
-  };
+        if (this.settings.view === 'OverallSurvival') {
+            this.layout.xAxisTop.select('.tick:first-of-type').remove();
+            this.layout.xAxisBottom.select('.tick:first-of-type').remove();
+        }
+
+        this.layout.xAxisTop
+            .selectAll('.tick line')
+            .attr('stroke', '#999')
+            .attr('stroke-opacity', 0.6);
+        //this.layout.xAxisTop.select('.domain').remove();
+        //this.layout.xAxisBottom.select('.domain').remove();
+    };
 }

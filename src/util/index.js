@@ -4,4 +4,4 @@ import addIcon from './addIcon';
 export default {
     addElement,
     addIcon,
-}
+};

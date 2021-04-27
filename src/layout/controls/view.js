@@ -1,3 +1,1 @@
-export default function view(controls) {
-
-}
+export default function view(controls) {}

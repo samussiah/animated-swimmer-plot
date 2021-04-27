@@ -13,5 +13,5 @@ export default {
     //speedDown,
     //speedUp,
     reset,
-    range
-}
+    range,
+};

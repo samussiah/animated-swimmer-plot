@@ -8,13 +8,13 @@ export default function settings() {
         visit_order_var: 'VISITNUM',
 
         // controls
-        view: 'overall', // ['overall', 'current-response', 'progression-free']
+        view: 'OverallSurvival', // ['OverallSurvival', 'CurrentResponse']
         play: true,
         timepoint: 0,
         timepointUnit: 'day',
         timepointMin: null,
         timepointMax: null,
-        speed: 250,
+        duration: 250,
         speedFactor: 50,
 
         // dimensions
@@ -24,9 +24,9 @@ export default function settings() {
         },
         margin: {
             top: 40,
-            right: 100,
+            right: 0,
             bottom: 20,
-            left: 0,
+            left: 100,
         },
         buttonSize: 50,
         barSize: null,

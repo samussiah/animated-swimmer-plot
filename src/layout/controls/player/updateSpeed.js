@@ -1,3 +1,1 @@
-export default function updateSpeed() {
-
-}
+export default function updateSpeed() {}

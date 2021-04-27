@@ -9,7 +9,7 @@ export default function animatedSwimmerPlot(_data_, _element_ = 'body', _setting
     const fdg = {
         element: _element_,
         settings: Object.assign(settings(), _settings_),
-        util
+        util,
     };
 
     fdg.layout = layout.call(fdg);

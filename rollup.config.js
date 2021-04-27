@@ -26,7 +26,16 @@ export default {
         babel({
             exclude: 'node_modules/**',
             presets: [
-                [ '@babel/preset-env' ]
+                [
+                    '@babel/preset-env',
+                    {
+                        "modules": false,
+                        "spec": true,
+                        "forceAllTransforms": true,
+                        "useBuiltIns": "usage",
+                        "corejs": 3
+                    }
+                ]
             ],
             babelrc: false
         }),
