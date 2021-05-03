@@ -8,7 +8,7 @@ export default function settings() {
         visit_order_var: 'VISITNUM',
 
         // controls
-        view: 'OverallSurvival', // ['OverallSurvival', 'CurrentResponse']
+        view: 'CurrentResponse', // ['OverallSurvival', 'CurrentResponse']
         play: true,
         timepoint: 0,
         timepointUnit: 'day',

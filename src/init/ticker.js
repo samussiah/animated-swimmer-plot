@@ -3,11 +3,11 @@ export default function ticker() {
         .append('text')
         .attr('text-anchor', 'end')
         .attr('x', this.settings.width - 6)
-        .attr('y', this.settings.margin.top + this.scale.y.bandwidth() * (this.set.id.size - 0.45))
+        .attr('y', this.settings.height - this.settings.margin.bottom - 12)
         .attr('dy', '0.32em')
-        .text(this.data.timepoints[0][0]);
+        .text(`Day ${this.data.timepoints[0][0]}`);
 
     return ([timepoint], transition) => {
-        transition.end().then(() => now.text(timepoint));
+        transition.end().then(() => now.text(`Day ${timepoint}`));
     };
 }

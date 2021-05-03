@@ -1,5 +1,5 @@
 {
-  "TODO": "add axis; add ID-level bars; add result-level grouping",
+  "TODO": "make range slider functional; implement resize; work on controls layout",
   "name": "animated-swimmer-plot",
   "version": "0.1.0",
   "description": "an animated swimmer plot of overall survival and response to therapy in oncology trials",
