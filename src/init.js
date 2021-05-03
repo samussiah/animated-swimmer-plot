@@ -8,6 +8,33 @@ import labels from './init/labels';
 import ticker from './init/ticker';
 import updateTimepoint from './layout/controls/player/updateTimepoint';
 
+export async function runAnimation() {
+    for (const timepoint of this.data.timepoints) {
+        updateTimepoint.call(this, timepoint[0]);
+
+        const transition = this.layout.svg
+            .transition()
+            .duration(this.settings.duration)
+            .ease(d3.easeLinear);
+
+        // Update the x-domain.
+        const allStates = this.data.interpolated.flatMap(
+            (d) => d[`states${this.settings.view}`]
+        );
+        const x1 = d3.min(allStates, (d) => d.start_timepoint);
+        const x2 = d3.max(allStates, (d) => d.start_timepoint + d.duration);
+        this.scale.x.domain([x1, x2]);
+
+        this.update.groups(timepoint, transition);
+        this.update.bars(timepoint, transition);
+        this.update.axis(timepoint, transition);
+        this.update.labels(timepoint, transition);
+        this.update.ticker(timepoint, transition);
+
+        await transition.end();
+    }
+}
+
 export default function init() {
     this.set = set.call(this);
     this.scale = scale.call(this);
@@ -21,32 +48,5 @@ export default function init() {
         ticker: ticker.call(this),
     };
 
-    const runAnimation = async () => {
-        for (const timepoint of this.data.timepoints) {
-            updateTimepoint.call(this, timepoint[0]);
-
-            const transition = this.layout.svg
-                .transition()
-                .duration(this.settings.duration)
-                .ease(d3.easeLinear);
-
-            // Update the x-domain.
-            const allStates = this.data.interpolated.flatMap(
-                (d) => d[`states${this.settings.view}`]
-            );
-            const x1 = d3.min(allStates, (d) => d.start_timepoint);
-            const x2 = d3.max(allStates, (d) => d.start_timepoint + d.duration);
-            this.scale.x.domain([x1, x2]);
-
-            this.update.groups(timepoint, transition);
-            this.update.bars(timepoint, transition);
-            this.update.axis(timepoint, transition);
-            this.update.labels(timepoint, transition);
-            this.update.ticker(timepoint, transition);
-
-            await transition.end();
-        }
-    };
-
-    runAnimation();
+    runAnimation.call(this);
 }

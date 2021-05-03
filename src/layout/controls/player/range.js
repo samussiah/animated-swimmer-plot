@@ -1,4 +1,5 @@
 import updateTimepoint from './updateTimepoint';
+import { runAnimation } from '../../../init';
 
 export default function range(form) {
     const main = this;
@@ -13,6 +14,8 @@ export default function range(form) {
     const output = this.util.addElement('output', label, 'output');
     input.on('change', function () {
         updateTimepoint.call(main, this.value);
+        if (this.settings.play)
+            runAnimation.call(this);
         // transition animation to selected timepoint
     });
 

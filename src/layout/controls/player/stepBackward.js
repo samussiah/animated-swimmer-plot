@@ -1,5 +1,6 @@
 import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
 import updateTimepoint from './updateTimepoint';
+import { runAnimation } from '../../../init';
 
 export default function stepBackward(form) {
     const button = this.util
@@ -10,6 +11,8 @@ export default function stepBackward(form) {
 
     button.on('click', () => {
         updateTimepoint.call(this, this.settings.timepoint - 1); // TODO: disable button at maximum timepoint
+        runAnimation.call(this);
+        this.settings.play = false;
         // pause animation and proceed to previous timepoint
     });
 

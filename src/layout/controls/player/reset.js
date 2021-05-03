@@ -1,5 +1,6 @@
 import { faRedo } from '@fortawesome/free-solid-svg-icons';
 import updateTimepoint from './updateTimepoint';
+import { runAnimation } from '../../../init';
 
 export default function reset(form) {
     const button = this.util
@@ -10,6 +11,8 @@ export default function reset(form) {
 
     button.on('click', () => {
         updateTimepoint.call(this, this.settings.timepointMin); // TODO: disable button at maximum timepoint
+        if (this.settings.play)
+            runAnimation.call(this);
         // animation resets to initial timepoint
     });
 
