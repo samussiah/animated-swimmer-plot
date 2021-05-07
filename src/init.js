@@ -28,7 +28,8 @@ export async function runAnimation() {
         this.update.groups(timepoint, transition);
         this.update.bars(timepoint, transition);
         this.update.axis(timepoint, transition);
-        this.update.labels(timepoint, transition);
+        if (this.settings.displayIds)
+            this.update.labels(timepoint, transition);
         this.update.ticker(timepoint, transition);
 
         await transition.end();
@@ -39,6 +40,18 @@ export default function init() {
     this.set = set.call(this);
     this.scale = scale.call(this);
     this.legend = legend.call(this);
+    this.layout.n
+                        .attr(
+                            'transform',
+                            (d) =>
+                                `translate(${this.settings.margin.left},${this.settings.margin.top/2})`
+                        )
+        .append('text')
+                                .attr('text-anchor', 'end')
+                                .attr('alignment-baseline', 'middle')
+                                .attr('x', -10)
+        .attr('y', 10)
+        .text(`n=${this.set.id.size}`);
 
     this.update = {
         groups: groups.call(this),

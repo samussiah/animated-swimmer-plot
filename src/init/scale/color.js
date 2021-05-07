@@ -1,6 +1,11 @@
 export default function color() {
+    console.log(this.set.result_color);
     return d3
         .scaleOrdinal()
         .domain(this.set.result)
-        .range(['#d6604d', '#bdbdbd', '#92c5de', '#4393c3', '#2166ac']);
+        .range(
+            this.set.result_color.length > 1
+                ? this.set.result_color.concat(d3.schemeTableau10)
+                : d3.schemeTableau10
+        );
 }

@@ -264,7 +264,7 @@
       visit_var: 'VISIT',
       visit_order_var: 'VISITNUM',
       // controls
-      view: 'CurrentResponse',
+      view: 'OverallSurvival',
       // ['OverallSurvival', 'CurrentResponse']
       play: true,
       timepoint: 0,
@@ -285,7 +285,9 @@
         left: 100
       },
       buttonSize: 50,
-      barSize: null
+      barSize: null,
+      // miscellaneous
+      displayIds: false
     };
   }
 
@@ -1148,11 +1150,11 @@
     var set = _toConsumableArray(new Set(this.data.mutated.map(function (d) {
       _newArrowCheck(this, _this);
 
-      return "".concat(d.result_order, "|").concat(d.result);
+      return "".concat(d.result_order, "|").concat(d.result, "|").concat(d.result_color);
     }.bind(this))).values()).map(function (d) {
       _newArrowCheck(this, _this);
 
-      return [+d.split('|')[0], d.split('|')[1]];
+      return [+d.split('|')[0], d.split('|')[1], d.split('|')[2]];
     }.bind(this)).sort(function (_ref, _ref2) {
       _newArrowCheck(this, _this);
 
@@ -1163,24 +1165,39 @@
           b = _ref4[0];
 
       return a - b;
-    }.bind(this)).map(function (_ref5) {
+    }.bind(this));
+
+    var result = set.map(function (_ref5) {
       _newArrowCheck(this, _this);
 
-      var _ref6 = _slicedToArray(_ref5, 2),
-          result = _ref6[1];
+      var _ref6 = _slicedToArray(_ref5, 3);
+          _ref6[0];
+          var result = _ref6[1];
+          _ref6[2];
 
       return result;
     }.bind(this));
+    var result_color = set.map(function (_ref7) {
+      _newArrowCheck(this, _this);
 
-    return set;
+      var _ref8 = _slicedToArray(_ref7, 3);
+          _ref8[0];
+          _ref8[1];
+          var result_color = _ref8[2];
+
+      return result_color;
+    }.bind(this));
+    return {
+      result: result,
+      result_color: result_color
+    };
   }
 
   function set() {
-    return {
+    return _objectSpread2({
       id: id.call(this),
-      visit: visit.call(this),
-      result: result.call(this)
-    };
+      visit: visit.call(this)
+    }, result.call(this));
   }
 
   function x() {
@@ -1192,7 +1209,8 @@
   }
 
   function color() {
-    return d3.scaleOrdinal().domain(this.set.result).range(['#d6604d', '#bdbdbd', '#92c5de', '#4393c3', '#2166ac']);
+    console.log(this.set.result_color);
+    return d3.scaleOrdinal().domain(this.set.result).range(this.set.result_color.length > 1 ? this.set.result_color.concat(d3.schemeTableau10) : d3.schemeTableau10);
   }
 
   function scale() {
@@ -1534,7 +1552,7 @@
 
   function _runAnimation() {
     _runAnimation = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var _this = this;
+      var _this2 = this;
 
       var _iterator, _step, timepoint, transition, allStates, x1, x2;
 
@@ -1558,17 +1576,17 @@
               transition = this.layout.svg.transition().duration(this.settings.duration).ease(d3.easeLinear); // Update the x-domain.
 
               allStates = this.data.interpolated.flatMap(function (d) {
-                _newArrowCheck(this, _this);
+                _newArrowCheck(this, _this2);
 
                 return d["states".concat(this.settings.view)];
               }.bind(this));
               x1 = d3.min(allStates, function (d) {
-                _newArrowCheck(this, _this);
+                _newArrowCheck(this, _this2);
 
                 return d.start_timepoint;
               }.bind(this));
               x2 = d3.max(allStates, function (d) {
-                _newArrowCheck(this, _this);
+                _newArrowCheck(this, _this2);
 
                 return d.start_timepoint + d.duration;
               }.bind(this));
@@ -1576,7 +1594,7 @@
               this.update.groups(timepoint, transition);
               this.update.bars(timepoint, transition);
               this.update.axis(timepoint, transition);
-              this.update.labels(timepoint, transition);
+              if (this.settings.displayIds) this.update.labels(timepoint, transition);
               this.update.ticker(timepoint, transition);
               _context.next = 18;
               return transition.end();
@@ -1613,9 +1631,16 @@
   }
 
   function init() {
+    var _this = this;
+
     this.set = set.call(this);
     this.scale = scale.call(this);
     this.legend = legend.call(this);
+    this.layout.n.attr('transform', function (d) {
+      _newArrowCheck(this, _this);
+
+      return "translate(".concat(this.settings.margin.left, ",").concat(this.settings.margin.top / 2, ")");
+    }.bind(this)).append('text').attr('text-anchor', 'end').attr('alignment-baseline', 'middle').attr('x', -10).attr('y', 10).text("n=".concat(this.set.id.size));
     this.update = {
       groups: groups.call(this),
       bars: bars.call(this),
@@ -1764,6 +1789,7 @@
     var svg = this.util.addElement('svg', canvas, 'svg').attr('viewBox', [0, 0, this.settings.width, this.settings.height]); //.attr('width', this.settings.width)
     //.attr('height', this.settings.height);
 
+    var n = this.util.addElement('g--n', svg, 'g');
     var groups = this.util.addElement('g--groups', svg, 'g');
     var bars = this.util.addElement('g--bars', svg, 'g');
     var xAxisTop = this.util.addElement('g--x-axis', svg, 'g').attr('transform', "translate(0,".concat(this.settings.margin.top, ")"));
@@ -1773,6 +1799,7 @@
     return {
       canvas: canvas,
       svg: svg,
+      n: n,
       groups: groups,
       bars: bars,
       xAxisTop: xAxisTop,
@@ -1825,14 +1852,17 @@
           var setting = _step.value;
           var variable = setting.replace(/_var$/, '');
           datum[variable] = ['timepoint', 'visit_order'].includes(variable) ? +d[this.settings[setting]] : d[this.settings[setting]];
-        }
+        } // TODO: use a variable from the data
+
       } catch (err) {
         _iterator.e(err);
       } finally {
         _iterator.f();
       }
 
-      datum.result_order = datum.result === 'PD' ? -1 : datum.result === 'NE' ? 0 : datum.result === 'SD' ? 1 : datum.result === 'PR' ? 2 : datum.result === 'CR' ? 3 : null;
+      datum.result_order = datum.result === 'CR' ? 0 : datum.result === 'PR' ? 1 : datum.result === 'SD' ? 2 : datum.result === 'NE' ? 3 : datum.result === 'UN' ? 4 : datum.result === 'PD' ? 5 : null; // TODO: use a variable from the data
+
+      datum.result_color = datum.result === 'CR' ? '#2166ac' : datum.result === 'PR' ? '#4393c3' : datum.result === 'SD' ? '#92c5de' : datum.result === 'NE' ? '#969696' : datum.result === 'UN' ? '#bdbdbd' : datum.result === 'PD' ? '#d6604d' : null;
       return datum;
     }.bind(this));
     return mutated;
@@ -1880,7 +1910,8 @@
       var state_duration;
       var states = [];
       var total_duration = 0;
-      var sequence = 0;
+      var sequence = 0; // TODO: figure out one-record IDs
+
       d3.pairs(group).forEach(function (pair, i, pairs) {
         var _this3 = this;
 
@@ -1978,7 +2009,7 @@
       group.sort(function (a, b) {
         _newArrowCheck(this, _this2);
 
-        var state_order_diff = b.state_order - a.state_order;
+        var state_order_diff = a.state_order - b.state_order;
         var total_duration_diff = b.total_duration - a.total_duration;
         var duration_diff = b.duration - a.duration;
         var id_diff = a.id < b.id ? -1 : 1;
@@ -1996,7 +2027,7 @@
       group.sort(function (a, b) {
         _newArrowCheck(this, _this2);
 
-        var state_order_diff = b.state_order - a.state_order;
+        var state_order_diff = a.state_order - b.state_order;
         var duration_diff = b.duration - a.duration; // sort the earlier responders first
 
         var total_duration_diff = a.total_duration - b.total_duration;

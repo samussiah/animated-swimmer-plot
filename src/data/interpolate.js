@@ -14,6 +14,7 @@ export default function interpolate(data) {
             let total_duration = 0;
             let sequence = 0;
 
+            // TODO: figure out one-record IDs
             d3.pairs(group).forEach((pair, i, pairs) => {
                 // Update state initially and when state changes.
                 if (i === 0 || pair[0].result !== pairs[i - 1][0].result) {

@@ -8,7 +8,7 @@ export default function settings() {
         visit_order_var: 'VISITNUM',
 
         // controls
-        view: 'CurrentResponse', // ['OverallSurvival', 'CurrentResponse']
+        view: 'OverallSurvival', // ['OverallSurvival', 'CurrentResponse']
         play: true,
         timepoint: 0,
         timepointUnit: 'day',
@@ -30,5 +30,8 @@ export default function settings() {
         },
         buttonSize: 50,
         barSize: null,
+
+        // miscellaneous
+        displayIds: false,
     };
 }

@@ -6,6 +6,6 @@ export default function set() {
     return {
         id: id.call(this),
         visit: visit.call(this),
-        result: result.call(this),
+        ...result.call(this),
     };
 }

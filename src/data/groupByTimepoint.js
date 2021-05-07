@@ -15,7 +15,7 @@ export default function groupByTimepoint(interpolated, finalTimepoint) {
             //   4. ID
             group
                 .sort((a, b) => {
-                    const state_order_diff = b.state_order - a.state_order;
+                    const state_order_diff = a.state_order - b.state_order;
                     const total_duration_diff = b.total_duration - a.total_duration;
                     const duration_diff = b.duration - a.duration;
                     const id_diff = a.id < b.id ? -1 : 1;
@@ -33,7 +33,7 @@ export default function groupByTimepoint(interpolated, finalTimepoint) {
             // 4. ID
             group
                 .sort((a, b) => {
-                    const state_order_diff = b.state_order - a.state_order;
+                    const state_order_diff = a.state_order - b.state_order;
                     const duration_diff = b.duration - a.duration; // sort the earlier responders first
                     const total_duration_diff = a.total_duration - b.total_duration;
                     const id_diff = a.id < b.id ? -1 : 1;

@@ -5,6 +5,7 @@ export default function canvas(main) {
         .attr('viewBox', [0, 0, this.settings.width, this.settings.height]);
     //.attr('width', this.settings.width)
     //.attr('height', this.settings.height);
+    const n = this.util.addElement('g--n', svg, 'g');
     const groups = this.util.addElement('g--groups', svg, 'g');
     const bars = this.util.addElement('g--bars', svg, 'g');
     const xAxisTop = this.util
@@ -21,6 +22,7 @@ export default function canvas(main) {
     return {
         canvas,
         svg,
+        n,
         groups,
         bars,
         xAxisTop,

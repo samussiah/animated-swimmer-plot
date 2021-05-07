@@ -9,17 +9,36 @@ export default function mutate(data) {
                 : d[this.settings[setting]];
         }
 
+        // TODO: use a variable from the data
         datum.result_order =
-            datum.result === 'PD'
-                ? -1
-                : datum.result === 'NE'
+            datum.result === 'CR'
                 ? 0
-                : datum.result === 'SD'
-                ? 1
                 : datum.result === 'PR'
+                ? 1
+                : datum.result === 'SD'
                 ? 2
-                : datum.result === 'CR'
+                : datum.result === 'NE'
                 ? 3
+                : datum.result === 'UN'
+                ? 4
+                : datum.result === 'PD'
+                ? 5
+                : null;
+
+        // TODO: use a variable from the data
+        datum.result_color =
+            datum.result === 'CR'
+                ? '#2166ac'
+                : datum.result === 'PR'
+                ? '#4393c3'
+                : datum.result === 'SD'
+                ? '#92c5de'
+                : datum.result === 'NE'
+                ? '#969696'
+                : datum.result === 'UN'
+                ? '#bdbdbd'
+                : datum.result === 'PD'
+                ? '#d6604d'
                 : null;
 
         return datum;
