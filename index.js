@@ -1,6 +1,6 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('core-js/modules/es.object.assign.js'), require('core-js/modules/es.function.bind.js'), require('core-js/modules/es.array.join.js'), require('core-js/modules/es.array.concat.js'), require('core-js/modules/es.array.flat-map.js'), require('core-js/modules/es.array.unscopables.flat-map.js'), require('core-js/modules/es.array.iterator.js'), require('core-js/modules/es.object.to-string.js'), require('core-js/modules/es.set.js'), require('core-js/modules/es.string.iterator.js'), require('core-js/modules/web.dom-collections.iterator.js'), require('core-js/modules/es.array.map.js'), require('core-js/modules/es.array.filter.js'), require('core-js/modules/es.array.sort.js'), require('core-js/modules/es.regexp.exec.js'), require('core-js/modules/es.string.split.js'), require('core-js/modules/es.array.reverse.js'), require('core-js/modules/es.object.keys.js'), require('core-js/modules/es.string.replace.js'), require('core-js/modules/es.array.includes.js'), require('core-js/modules/es.array.for-each.js'), require('core-js/modules/web.dom-collections.for-each.js')) :
-  typeof define === 'function' && define.amd ? define(['core-js/modules/es.object.assign.js', 'core-js/modules/es.function.bind.js', 'core-js/modules/es.array.join.js', 'core-js/modules/es.array.concat.js', 'core-js/modules/es.array.flat-map.js', 'core-js/modules/es.array.unscopables.flat-map.js', 'core-js/modules/es.array.iterator.js', 'core-js/modules/es.object.to-string.js', 'core-js/modules/es.set.js', 'core-js/modules/es.string.iterator.js', 'core-js/modules/web.dom-collections.iterator.js', 'core-js/modules/es.array.map.js', 'core-js/modules/es.array.filter.js', 'core-js/modules/es.array.sort.js', 'core-js/modules/es.regexp.exec.js', 'core-js/modules/es.string.split.js', 'core-js/modules/es.array.reverse.js', 'core-js/modules/es.object.keys.js', 'core-js/modules/es.string.replace.js', 'core-js/modules/es.array.includes.js', 'core-js/modules/es.array.for-each.js', 'core-js/modules/web.dom-collections.for-each.js'], factory) :
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('core-js/modules/es.object.assign.js'), require('core-js/modules/es.function.bind.js'), require('core-js/modules/es.array.join.js'), require('core-js/modules/es.array.concat.js'), require('core-js/modules/es.array.flat-map.js'), require('core-js/modules/es.array.unscopables.flat-map.js'), require('core-js/modules/es.array.filter.js'), require('core-js/modules/es.array.iterator.js'), require('core-js/modules/es.object.to-string.js'), require('core-js/modules/es.set.js'), require('core-js/modules/es.string.iterator.js'), require('core-js/modules/web.dom-collections.iterator.js'), require('core-js/modules/es.array.map.js'), require('core-js/modules/es.array.sort.js'), require('core-js/modules/es.regexp.exec.js'), require('core-js/modules/es.string.split.js'), require('core-js/modules/es.array.reverse.js'), require('core-js/modules/es.object.keys.js'), require('core-js/modules/es.string.replace.js'), require('core-js/modules/es.array.includes.js'), require('core-js/modules/es.array.for-each.js'), require('core-js/modules/web.dom-collections.for-each.js')) :
+  typeof define === 'function' && define.amd ? define(['core-js/modules/es.object.assign.js', 'core-js/modules/es.function.bind.js', 'core-js/modules/es.array.join.js', 'core-js/modules/es.array.concat.js', 'core-js/modules/es.array.flat-map.js', 'core-js/modules/es.array.unscopables.flat-map.js', 'core-js/modules/es.array.filter.js', 'core-js/modules/es.array.iterator.js', 'core-js/modules/es.object.to-string.js', 'core-js/modules/es.set.js', 'core-js/modules/es.string.iterator.js', 'core-js/modules/web.dom-collections.iterator.js', 'core-js/modules/es.array.map.js', 'core-js/modules/es.array.sort.js', 'core-js/modules/es.regexp.exec.js', 'core-js/modules/es.string.split.js', 'core-js/modules/es.array.reverse.js', 'core-js/modules/es.object.keys.js', 'core-js/modules/es.string.replace.js', 'core-js/modules/es.array.includes.js', 'core-js/modules/es.array.for-each.js', 'core-js/modules/web.dom-collections.for-each.js'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.animatedSwimmerPlot = factory());
 }(this, (function () { 'use strict';
 
@@ -329,29 +329,6 @@
     iconName: 'step-forward',
     icon: [448, 512, [], "f051", "M384 44v424c0 6.6-5.4 12-12 12h-48c-6.6 0-12-5.4-12-12V291.6l-195.5 181C95.9 489.7 64 475.4 64 448V64c0-27.4 31.9-41.7 52.5-24.6L312 219.3V44c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12z"]
   };
-
-  function playPause(form) {
-    var _this = this;
-
-    var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', this.settings.play ? 'Pause animation' : 'Play animation');
-    var path = this.util.addIcon.call(this, button, (this.settings.play ? faPause : faPlay).icon);
-    button.on('click', function () {
-      _newArrowCheck(this, _this);
-
-      console.log(this.settings.play ? 'pause' : 'play');
-      this.settings.play = !this.settings.play;
-      button.attr('title', this.settings.play ? 'Pause animation' : 'Play animation');
-      path.attr('d', (this.settings.play ? faPause : faPlay).icon[4]);
-      this.layout.svg.interrupt(); // pause or resume animation
-    }.bind(this));
-    return button;
-  }
-
-  function updateTimepoint(timepoint) {
-    this.settings.timepoint = timepoint;
-    this.controls.range.input.property('value', timepoint);
-    this.controls.range.output.text("".concat(this.settings.timepointUnit, " ").concat(this.settings.timepoint));
-  }
 
   function createCommonjsModule(fn) {
     var module = { exports: {} };
@@ -1546,98 +1523,124 @@
     }.bind(this);
   }
 
+  function updateTimepoint(timepoint) {
+    this.settings.timepoint = timepoint;
+    this.controls.range.input.property('value', timepoint);
+    this.controls.range.output.text("".concat(this.settings.timepointUnit, " ").concat(this.settings.timepoint));
+  }
+
+  function transitionAnimation(timepoint) {
+    var _this = this;
+
+    var transition = this.layout.svg.transition().duration(this.settings.duration).ease(d3.easeLinear); // Update the x-domain.
+
+    var allStates = this.data.interpolated.flatMap(function (d) {
+      _newArrowCheck(this, _this);
+
+      return d["states".concat(this.settings.view)];
+    }.bind(this));
+    var x1 = d3.min(allStates, function (d) {
+      _newArrowCheck(this, _this);
+
+      return d.start_timepoint;
+    }.bind(this));
+    var x2 = d3.max(allStates, function (d) {
+      _newArrowCheck(this, _this);
+
+      return d.start_timepoint + d.duration;
+    }.bind(this));
+    this.scale.x.domain([x1, x2]);
+    this.update.groups(timepoint, transition);
+    this.update.bars(timepoint, transition);
+    this.update.axis(timepoint, transition);
+    if (this.settings.displayIds) this.update.labels(timepoint, transition);
+    this.update.ticker(timepoint, transition);
+    return transition;
+  }
   function runAnimation() {
     return _runAnimation.apply(this, arguments);
   }
 
   function _runAnimation() {
     _runAnimation = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var _this2 = this;
+      var _this3 = this;
 
-      var _iterator, _step, timepoint, transition, allStates, x1, x2;
+      var _iterator, _step, timepoint, transition;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _iterator = _createForOfIteratorHelper(this.data.timepoints);
+              _iterator = _createForOfIteratorHelper(this.data.timepoints.filter(function (d) {
+                _newArrowCheck(this, _this3);
+
+                return d[0] >= this.settings.timepoint;
+              }.bind(this)));
               _context.prev = 1;
 
               _iterator.s();
 
             case 3:
               if ((_step = _iterator.n()).done) {
-                _context.next = 20;
+                _context.next = 14;
                 break;
               }
 
               timepoint = _step.value;
-              updateTimepoint.call(this, timepoint[0]);
-              transition = this.layout.svg.transition().duration(this.settings.duration).ease(d3.easeLinear); // Update the x-domain.
+              updateTimepoint.call(this, timepoint[0]); // Break loop.
 
-              allStates = this.data.interpolated.flatMap(function (d) {
-                _newArrowCheck(this, _this2);
+              if (!this["break"]) {
+                _context.next = 9;
+                break;
+              }
 
-                return d["states".concat(this.settings.view)];
-              }.bind(this));
-              x1 = d3.min(allStates, function (d) {
-                _newArrowCheck(this, _this2);
+              delete this["break"];
+              return _context.abrupt("break", 14);
 
-                return d.start_timepoint;
-              }.bind(this));
-              x2 = d3.max(allStates, function (d) {
-                _newArrowCheck(this, _this2);
-
-                return d.start_timepoint + d.duration;
-              }.bind(this));
-              this.scale.x.domain([x1, x2]);
-              this.update.groups(timepoint, transition);
-              this.update.bars(timepoint, transition);
-              this.update.axis(timepoint, transition);
-              if (this.settings.displayIds) this.update.labels(timepoint, transition);
-              this.update.ticker(timepoint, transition);
-              _context.next = 18;
+            case 9:
+              transition = transitionAnimation.call(this, timepoint);
+              _context.next = 12;
               return transition.end();
 
-            case 18:
+            case 12:
               _context.next = 3;
               break;
 
-            case 20:
-              _context.next = 25;
+            case 14:
+              _context.next = 19;
               break;
 
-            case 22:
-              _context.prev = 22;
+            case 16:
+              _context.prev = 16;
               _context.t0 = _context["catch"](1);
 
               _iterator.e(_context.t0);
 
-            case 25:
-              _context.prev = 25;
+            case 19:
+              _context.prev = 19;
 
               _iterator.f();
 
-              return _context.finish(25);
+              return _context.finish(19);
 
-            case 28:
+            case 22:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, this, [[1, 22, 25, 28]]);
+      }, _callee, this, [[1, 16, 19, 22]]);
     }));
     return _runAnimation.apply(this, arguments);
   }
 
   function init() {
-    var _this = this;
+    var _this2 = this;
 
     this.set = set.call(this);
     this.scale = scale.call(this);
     this.legend = legend.call(this);
     this.layout.n.attr('transform', function (d) {
-      _newArrowCheck(this, _this);
+      _newArrowCheck(this, _this2);
 
       return "translate(".concat(this.settings.margin.left, ",").concat(this.settings.margin.top / 2, ")");
     }.bind(this)).append('text').attr('text-anchor', 'end').attr('alignment-baseline', 'middle').attr('x', -10).attr('y', 10).text("n=".concat(this.set.id.size));
@@ -1651,6 +1654,25 @@
     runAnimation.call(this);
   }
 
+  function playPause(form) {
+    var _this = this;
+
+    var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', this.settings.play ? 'Pause animation' : 'Play animation');
+    var path = this.util.addIcon.call(this, button, (this.settings.play ? faPause : faPlay).icon);
+    button.on('click', function () {
+      _newArrowCheck(this, _this);
+
+      console.log(this.settings.play ? 'pause' : 'play'); // Break animation loop on pause.
+
+      if (this.settings.play) this["break"] = true; // Resume animation on play.
+      else runAnimation.call(this);
+      this.settings.play = !this.settings.play;
+      button.attr('title', this.settings.play ? 'Pause animation' : 'Play animation');
+      path.attr('d', (this.settings.play ? faPause : faPlay).icon[4]);
+    }.bind(this));
+    return button;
+  }
+
   function stepBackward(form) {
     var _this = this;
 
@@ -1661,6 +1683,7 @@
 
       updateTimepoint.call(this, this.settings.timepoint - 1); // TODO: disable button at maximum timepoint
 
+      console.log(this.settings.timepoint);
       runAnimation.call(this);
       this.settings.play = false; // pause animation and proceed to previous timepoint
     }.bind(this));
@@ -1685,13 +1708,18 @@
     var _this = this;
 
     var button = this.util.addElement('button', form, 'button').attr('type', 'button').attr('title', 'Restart animation');
-    this.util.addIcon.call(this, button, faRedo.icon);
+    this.util.addIcon.call(this, button, faRedo.icon); // TODO: make reset work
+
     button.on('click', function () {
       _newArrowCheck(this, _this);
 
-      updateTimepoint.call(this, this.settings.timepointMin); // TODO: disable button at maximum timepoint
+      console.log('reset'); // Break animation loop on reset.
 
-      if (this.settings.play) runAnimation.call(this); // animation resets to initial timepoint
+      this["break"] = true;
+      updateTimepoint.call(this, this.settings.timepointMin); // TODO: disable button at maximum timepoint
+      //transitionAnimation.call(this
+      //if (this.settings.play)
+      //    runAnimation.call(this);
     }.bind(this));
     return button;
   }

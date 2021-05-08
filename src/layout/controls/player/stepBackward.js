@@ -11,6 +11,7 @@ export default function stepBackward(form) {
 
     button.on('click', () => {
         updateTimepoint.call(this, this.settings.timepoint - 1); // TODO: disable button at maximum timepoint
+        console.log(this.settings.timepoint);
         runAnimation.call(this);
         this.settings.play = false;
         // pause animation and proceed to previous timepoint
