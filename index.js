@@ -259,10 +259,15 @@
     return {
       // data mappings
       id_var: 'USUBJID',
-      timepoint_var: 'RSDY',
-      result_var: 'RSSTRESC',
-      visit_var: 'VISIT',
-      visit_order_var: 'VISITNUM',
+      timepoint_var: 'ADY',
+      duration_var: 'ADUR',
+      censor_var: 'CNSR',
+      censor_timepoint_var: 'CNSRDY',
+      result_var: 'AVALC',
+      result_order_var: 'AVAL',
+      result_color_var: 'ACOLOR',
+      visit_var: 'AVISIT',
+      visit_order_var: 'AVISITN',
       // controls
       view: 'OverallSurvival',
       // ['OverallSurvival', 'CurrentResponse']
@@ -1888,10 +1893,33 @@
         _iterator.f();
       }
 
-      datum.result_order = datum.result === 'CR' ? 0 : datum.result === 'PR' ? 1 : datum.result === 'SD' ? 2 : datum.result === 'NE' ? 3 : datum.result === 'UN' ? 4 : datum.result === 'PD' ? 5 : null; // TODO: use a variable from the data
+      datum.result_order = d[this.settings.result_order_var] !== undefined ? d[this.settings.result_order_var] : datum.result === 'CR' ? 0 : datum.result === 'PR' ? 1 : datum.result === 'SD' ? 2 : datum.result === 'NE' ? 3 : datum.result === 'UN' ? 4 : datum.result === 'PD' ? 5 : null; // TODO: use a variable from the data
 
-      datum.result_color = datum.result === 'CR' ? '#2166ac' : datum.result === 'PR' ? '#4393c3' : datum.result === 'SD' ? '#92c5de' : datum.result === 'NE' ? '#969696' : datum.result === 'UN' ? '#bdbdbd' : datum.result === 'PD' ? '#d6604d' : null;
+      datum.result_color = d[this.settings.result_color_var] !== undefined ? d[this.settings.result_color_var] : datum.result === 'CR' ? '#2166ac' : datum.result === 'PR' ? '#4393c3' : datum.result === 'SD' ? '#92c5de' : datum.result === 'NE' ? '#969696' : datum.result === 'UN' ? '#bdbdbd' : datum.result === 'PD' ? '#d6604d' : null;
       return datum;
+    }.bind(this)); // Calculate duration of each response.
+
+    d3.rollup(mutated, function (group) {
+      var _this3 = this;
+
+      _newArrowCheck(this, _this);
+
+      group.sort(function (a, b) {
+        _newArrowCheck(this, _this3);
+
+        return a.timepoint - b.timepoint;
+      }.bind(this));
+      d3.pairs(group).forEach(function (pair, i, pairs) {
+        _newArrowCheck(this, _this3);
+
+        if (pair[0].duration === undefined) pair[0].duration = pair[1].timepoint - pair[0].timepoint;
+      }.bind(this));
+      var last = group[group.length - 1];
+      if (last.duration === undefined) last.duration = last.censor_timepoint !== undefined ? last.censor_timepoint - last.timepoint : 1;
+    }.bind(this), function (d) {
+      _newArrowCheck(this, _this);
+
+      return d.id;
     }.bind(this));
     return mutated;
   }
@@ -1929,25 +1957,26 @@
       _newArrowCheck(this, _this);
 
       var _long = [];
-      group.sort(function (a, b) {
-        _newArrowCheck(this, _this2);
-
-        return a.timepoint - b.timepoint;
-      }.bind(this));
       var state;
       var state_duration;
       var states = [];
       var total_duration = 0;
-      var sequence = 0; // TODO: figure out one-record IDs
+      var sequence = 0; // TODO: add final state to output data, i.e. the final response/visit/cycle - need to use a pre-defined duration
+      //
+      // Pair each record for the given participant to define a start and end timepoint.
 
-      d3.pairs(group).forEach(function (pair, i, pairs) {
+      group.sort(function (a, b) {
+        _newArrowCheck(this, _this2);
+
+        return a.timepoint - b.timepoint;
+      }.bind(this)).forEach(function (d, i) {
         var _this3 = this;
 
         _newArrowCheck(this, _this2);
 
         // Update state initially and when state changes.
-        if (i === 0 || pair[0].result !== pairs[i - 1][0].result) {
-          state = pair[0].result;
+        if (i === 0 || d.result !== group[i - 1].result) {
+          state = d.result;
           state_duration = 0;
           states.push({
             state: state,
@@ -1960,12 +1989,11 @@
           }); // TODO: retain the total duration up to the current state
 
           sequence++;
-        }
+        } // Define an item for each day between the current timepoint (pair[0]) and the next timepoint (pair[1]).
 
-        var duration = pair[1].timepoint - pair[0].timepoint || 1; // Define an item for each day between the current timepoint (pair[0]) and the next timepoint (pair[1]).
 
-        for (var _i = 0; _i < duration; _i++) {
-          var datum = _objectSpread2({}, pair[0]);
+        for (var _i = 0; _i < d.duration; _i++) {
+          var datum = _objectSpread2({}, d);
 
           datum.timepoint = datum.timepoint + _i; // Increment timepoint.
 
@@ -1988,8 +2016,8 @@
         } // Add difference between timepoints to duration.
 
 
-        state_duration = state_duration + duration;
-        total_duration += duration;
+        state_duration = state_duration + d.duration;
+        total_duration += d.duration;
       }.bind(this));
       return _long;
     }.bind(this), function (d) {

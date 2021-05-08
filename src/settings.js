@@ -2,10 +2,15 @@ export default function settings() {
     return {
         // data mappings
         id_var: 'USUBJID',
-        timepoint_var: 'RSDY',
-        result_var: 'RSSTRESC',
-        visit_var: 'VISIT',
-        visit_order_var: 'VISITNUM',
+        timepoint_var: 'ADY',
+        duration_var: 'ADUR',
+        censor_var: 'CNSR',
+        censor_timepoint_var: 'CNSRDY',
+        result_var: 'AVALC',
+        result_order_var: 'AVAL',
+        result_color_var: 'ACOLOR',
+        visit_var: 'AVISIT',
+        visit_order_var: 'AVISITN',
 
         // controls
         view: 'OverallSurvival', // ['OverallSurvival', 'CurrentResponse']

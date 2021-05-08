@@ -6,7 +6,6 @@ export default function interpolate(data) {
         (group) => {
             const long = [];
 
-            group.sort((a, b) => a.timepoint - b.timepoint);
 
             let state;
             let state_duration;
@@ -14,11 +13,15 @@ export default function interpolate(data) {
             let total_duration = 0;
             let sequence = 0;
 
-            // TODO: figure out one-record IDs
-            d3.pairs(group).forEach((pair, i, pairs) => {
+            // TODO: add final state to output data, i.e. the final response/visit/cycle - need to use a pre-defined duration
+            //
+            // Pair each record for the given participant to define a start and end timepoint.
+            group
+                .sort((a, b) => a.timepoint - b.timepoint)
+                .forEach((d, i) => {
                 // Update state initially and when state changes.
-                if (i === 0 || pair[0].result !== pairs[i - 1][0].result) {
-                    state = pair[0].result;
+                if (i === 0 || d.result !== group[i - 1].result) {
+                    state = d.result;
                     state_duration = 0;
                     states.push({
                         state, // current state
@@ -29,11 +32,9 @@ export default function interpolate(data) {
                     sequence++;
                 }
 
-                const duration = pair[1].timepoint - pair[0].timepoint || 1;
-
                 // Define an item for each day between the current timepoint (pair[0]) and the next timepoint (pair[1]).
-                for (let i = 0; i < duration; i++) {
-                    const datum = { ...pair[0] };
+                for (let i = 0; i < d.duration; i++) {
+                    const datum = { ...d };
 
                     datum.timepoint = datum.timepoint + i; // Increment timepoint.
                     datum.duration = state_duration + i + 1; // Increment duration of current state.
@@ -48,8 +49,8 @@ export default function interpolate(data) {
                 }
 
                 // Add difference between timepoints to duration.
-                state_duration = state_duration + duration;
-                total_duration += duration;
+                state_duration = state_duration + d.duration;
+                total_duration += d.duration;
             });
 
             return long;
