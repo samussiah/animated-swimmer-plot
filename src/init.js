@@ -1,32 +1,47 @@
+import initPlot from './init/plot';
+import stratify from './init/stratify';
 import set from './init/set';
 import scale from './init/scale';
 import legend from './init/legend';
-import groups from './init/groups';
-import bars from './init/bars';
-import axis from './init/axis';
-import labels from './init/labels';
 import ticker from './init/ticker';
 import updateTimepoint from './layout/controls/player/updateTimepoint';
 
-export function transitionAnimation(timepoint) {
-    const transition = this.layout.svg
-        .transition()
-        .duration(this.settings.duration)
-        .ease(d3.easeLinear);
+export default function init() {
+    //stratify.call(this);
+    this.set = set.call(this);
+    this.scale = scale.call(this);
+    this.legend = legend.call(this);
+    this.plots = this.settings.stratum_var !== undefined
+        ? d3.groups(this.data.mutated, d => d.stratum)
+            .map(([stratum, mutated]) => {
+                const interpolated = this.data.interpolated
+                    .filter(d => d.stratum === stratum);
+                const timepoints = this.data.timepoints
+                    .map(([timepoint, data]) => {
 
-    // Update the x-domain.
-    const allStates = this.data.interpolated.flatMap((d) => d[`states${this.settings.view}`]);
-    const x1 = d3.min(allStates, (d) => d.start_timepoint);
-    const x2 = d3.max(allStates, (d) => d.start_timepoint + d.duration);
-    this.scale.x.domain([x1, x2]);
+                        // Define mutable rank given current view.
+                        const stratumData = data
+                            .filter(d => d.stratum === stratum)
+                            .sort((a,b) => a[`rank${this.settings.view}`] - b[`rank${this.settings.view}`]);
 
-    this.update.groups(timepoint, transition);
-    this.update.bars(timepoint, transition);
-    this.update.axis(timepoint, transition);
-    if (this.settings.displayIds) this.update.labels(timepoint, transition);
-    this.update.ticker(timepoint, transition);
+                        stratumData
+                            .forEach((d,i) => {
+                                d[`rank${stratum}`] = i;
+                            });
 
-    return transition;
+
+                        return [timepoint, stratumData];
+                    });
+                const data = {mutated, interpolated, timepoints};
+                const plot = initPlot.call(this, data);
+                plot.stratum = stratum;
+
+                return plot;
+            })
+        : [{...initPlot.call(this, this.data), stratum: ''}];
+    console.log(this.plots);
+
+    runAnimation.call(this);
 }
 
 export async function runAnimation() {
@@ -35,44 +50,43 @@ export async function runAnimation() {
 
         // Break loop.
         if (this.break) {
-            this.layout.svg.interrupt();
-            this.layout.ticker.text(`Day ${this.settings.timepoint}`);
+            this.plot.layout.svg.interrupt();
+            this.plot.layout.ticker.text(`Day ${this.settings.timepoint}`);
             delete this.break;
             break;
         }
 
-        this.active = true;
+        const allStates = this.data.interpolated.flatMap((d) => d[`states${this.settings.view}`]);
+        const x1 = d3.min(allStates, (d) => d.start_timepoint);
+        const x2 = d3.max(allStates, (d) => d.start_timepoint + d.duration);
+        const xDomain = [x1, x2];
 
-        const transition = transitionAnimation.call(this, timepoint);
-        this.transition = transition;
+        const transitions = this.plots
+            .map(plot => {
+                plot.data.timepoint = plot.data.timepoints.find(([timepoint, data]) => timepoint === this.settings.timepoint);
+                return transitionAnimation.call(this, plot, xDomain);
+            });
+        this.transition = transitions;
 
-        await transition.end();
+        await Promise.allSettled(transitions.map(transition => transition.end()));
     }
 }
 
-export default function init() {
-    this.set = set.call(this);
-    this.scale = scale.call(this);
-    this.legend = legend.call(this);
-    this.layout.n
-        .attr(
-            'transform',
-            (d) => `translate(${this.settings.margin.left},${this.settings.margin.top / 2})`
-        )
-        .append('text')
-        .attr('text-anchor', 'end')
-        .attr('alignment-baseline', 'middle')
-        .attr('x', -10)
-        .attr('y', 10)
-        .text(`n=${this.set.id.size}`);
+export function transitionAnimation(plot, xDomain) {
+    const transition = plot.layout.svg
+        .transition()
+        .duration(this.settings.duration)
+        .ease(d3.easeLinear);
 
-    this.update = {
-        groups: groups.call(this),
-        bars: bars.call(this),
-        axis: axis.call(this),
-        labels: labels.call(this),
-        ticker: ticker.call(this),
-    };
+    // Update the x-domain.
+    plot.scale.x.domain(xDomain);
 
-    runAnimation.call(this);
+    // Update the plot components.
+    plot.update.groups(plot.data.timepoint, transition);
+    plot.update.bars(plot.data.timepoint, transition);
+    plot.update.axis(plot.data.timepoint, transition);
+    if (this.settings.displayIds) plot.update.labels(plot.data.timepoint, transition);
+    plot.update.ticker(plot.data.timepoint, transition);
+
+    return transition;
 }

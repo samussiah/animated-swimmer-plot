@@ -11,6 +11,7 @@ export default function settings() {
         result_color_var: 'ACOLOR',
         visit_var: 'AVISIT',
         visit_order_var: 'AVISITN',
+        stratum_var: null,
 
         // controls
         view: 'OverallSurvival', // ['OverallSurvival', 'CurrentResponse']
@@ -33,6 +34,7 @@ export default function settings() {
             bottom: 20,
             left: 150,
         },
+        padding: 0.1,
         buttonSize: 50,
         barSize: null,
 

@@ -1,13 +1,8 @@
-export default function idLabels() {
-    let label = this.layout.svg
-        .append('g')
-        .style('font', 'bold 12px var(--sans-serif)')
-        .style('font-variant-numeric', 'tabular-nums')
-        .attr('text-anchor', 'start')
-        .selectAll('text');
+export default function labels(plot) {
+    let labels = plot.layout.labels.selectAll('text');
 
     return ([timepoint, data], transition) => {
-        label = label
+        labels = labels
             .data(data, (d) => d.id)
             .join(
                 (enter) =>
@@ -16,10 +11,10 @@ export default function idLabels() {
                         .attr('alignment-baseline', 'middle')
                         .attr(
                             'transform',
-                            (d) => `translate(${0},${this.scale.y(d[`rank${this.settings.view}`])})`
+                            (d) => `translate(${0},${plot.scale.y(d[`rank${plot.stratum}`])})`
                         )
                         .attr('x', this.settings.margin.left + 6)
-                        .attr('y', this.scale.y.bandwidth() / 2 + 1)
+                        .attr('y', plot.scale.y.bandwidth() / 2 + 1)
                         .text((d) => d.id),
                 (update) => update,
                 (exit) =>
@@ -28,7 +23,7 @@ export default function idLabels() {
                         .remove()
                         .attr(
                             'transform',
-                            (d) => `translate(${0},${this.scale.y(this.set.id.size + 1)})`
+                            (d) => `translate(${0},${plot.scale.y(plot.set.id.size + 1)})`
                         )
             )
             .call((label) =>
@@ -36,7 +31,7 @@ export default function idLabels() {
                     .transition(transition)
                     .attr(
                         'transform',
-                        (d) => `translate(${0},${this.scale.y(d[`rank${this.settings.view}`])})`
+                        (d) => `translate(${0},${plot.scale.y(d[`rank${plot.stratum}`])})`
                     )
             );
     };

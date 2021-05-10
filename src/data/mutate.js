@@ -4,7 +4,7 @@ export default function mutate(data) {
 
         for (const setting of Object.keys(this.settings).filter((key) => /_var$/.test(key))) {
             const variable = setting.replace(/_var$/, '');
-            datum[variable] = ['timepoint', 'visit_order'].includes(variable)
+            datum[variable] = ['timepoint', 'duration', 'censor_timepoint', 'result_order', 'visit_order'].includes(variable)
                 ? +d[this.settings[setting]]
                 : d[this.settings[setting]];
         }

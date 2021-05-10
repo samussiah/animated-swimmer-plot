@@ -1,9 +1,9 @@
-export default function canvas(main) {
+export default function layout(main, width) {
     const canvas = this.util.addElement('canvas', main);
     const svg = this.util
         .addElement('svg', canvas, 'svg')
-        .attr('viewBox', [0, 0, this.settings.width, this.settings.height]);
-    //.attr('width', this.settings.width)
+        .attr('viewBox', [0, 0, width, this.settings.height]);
+    //.attr('width', width)
     //.attr('height', this.settings.height);
     const n = this.util.addElement('g--n', svg, 'g');
     const groups = this.util.addElement('g--groups', svg, 'g')
@@ -29,7 +29,7 @@ export default function canvas(main) {
     const ticker = this.util
         .addElement('ticker', svg, 'text')
         .attr('text-anchor', 'end')
-        .attr('x', this.settings.width - 18)
+        .attr('x', width - 18)
         .attr('y', this.settings.height - this.settings.margin.bottom - 36)
         .attr('dy', '0.32em');
     //.text(`Day ${this.data.timepoints[0][0]}`);

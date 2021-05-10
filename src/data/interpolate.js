@@ -58,6 +58,7 @@ export default function interpolate(data) {
     );
 
     const flattened = [...interpolated.values()].flatMap((d) => d);
+    console.log(flattened);
 
     return flattened;
 }

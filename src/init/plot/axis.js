@@ -1,4 +1,4 @@
-export default function axis() {
+export default function axis(plot) {
     //this.layout.svg
     //    .append('text')
     //    .style('font', `bold 12px var(--sans-serif)`)
@@ -12,7 +12,7 @@ export default function axis() {
     //    .text(`ID`);
 
     const xAxisTop = d3
-        .axisTop(this.scale.x)
+        .axisTop(plot.scale.x)
         .ticks(this.settings.width / 160)
         .tickSizeOuter(0)
         .tickSizeInner(
@@ -20,25 +20,25 @@ export default function axis() {
         );
 
     const xAxisBottom = d3
-        .axisBottom(this.scale.x)
+        .axisBottom(plot.scale.x)
         .ticks(this.settings.width / 160)
         .tickSizeOuter(0)
         .tickSizeInner(0);
 
     return (_, transition) => {
-        this.layout.xAxisTop.transition(transition).call(xAxisTop);
-        this.layout.xAxisBottom.transition(transition).call(xAxisBottom);
+        plot.layout.xAxisTop.transition(transition).call(xAxisTop);
+        plot.layout.xAxisBottom.transition(transition).call(xAxisBottom);
 
         if (this.settings.view === 'OverallSurvival') {
-            this.layout.xAxisTop.select('.tick:first-of-type').remove();
-            this.layout.xAxisBottom.select('.tick:first-of-type').remove();
+            plot.layout.xAxisTop.select('.tick:first-of-type').remove();
+            plot.layout.xAxisBottom.select('.tick:first-of-type').remove();
         }
 
-        this.layout.xAxisTop
+        plot.layout.xAxisTop
             .selectAll('.tick line')
             .attr('stroke', '#999')
             .attr('stroke-opacity', 0.6);
-        //this.layout.xAxisTop.select('.domain').remove();
-        //this.layout.xAxisBottom.select('.domain').remove();
+        //plot.layout.xAxisTop.select('.domain').remove();
+        //plot.layout.xAxisBottom.select('.domain').remove();
     };
 }

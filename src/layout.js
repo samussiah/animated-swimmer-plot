@@ -12,7 +12,8 @@ export default function layout() {
     const legend = this.util
         .addElement('legend', main)
         .style('left', `${this.settings.margin.left}px`);
-    const canvas = layoutCanvas.call(this, main);
+    const plots = this.util.addElement('plots', main);
+    //const canvas = layoutCanvas.call(this, plots);
 
     window.addEventListener('resize', resize.bind(this));
 
@@ -20,6 +21,7 @@ export default function layout() {
         main,
         ...controls,
         legend,
-        ...canvas,
+        plots,
+        //...canvas,
     };
 }

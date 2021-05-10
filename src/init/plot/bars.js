@@ -1,28 +1,28 @@
-export default function bars() {
-    let g = this.layout.svg.append('g').attr('fill-opacity', 0.6).selectAll('g');
+export default function bars(plot) {
+    let bars = plot.layout.bars.selectAll('g');
 
     return ([timepoint, data], transition) => {
-        g = g
+        bars = bars
             .data(data, (d) => d.id)
             .join(
                 (enter) =>
                     enter
                         .append('g')
-                        .attr('height', this.scale.y.bandwidth())
-                        .attr('y', this.scale.y(this.set.id.size)),
+                        .attr('height', plot.scale.y.bandwidth())
+                        .attr('y', plot.scale.y(plot.set.id.size)),
                 (update) => update,
                 (exit) =>
                     exit
                         .transition(transition)
                         .remove()
-                        .attr('y', this.scale.y(this.set.id.size + 1))
+                        .attr('y', plot.scale.y(plot.set.id.size + 1))
             )
             .call((g) => {
                 g.transition(transition)
                     .duration(this.settings.duration)
                     .attr(
                         'transform',
-                        (d) => `translate(${0},${this.scale.y(d[`rank${this.settings.view}`])})`
+                        (d) => `translate(${0},${plot.scale.y(d[`rank${plot.stratum}`])})`
                     );
 
                 const rects = g
@@ -34,23 +34,21 @@ export default function bars() {
                     .join('rect')
                     .attr('fill', (d) => this.scale.color(d.state))
                     .attr('y', 0)
-                    .attr('height', this.scale.y.bandwidth())
+                    .attr('height', plot.scale.y.bandwidth())
                     .attr('rx', '4px')
                     .attr('ry', '4px')
                     .call((rect) =>
                         rect
                             .transition(transition)
                             .duration(this.settings.duration)
-                            .attr('x', (d) => this.scale.x(d.start_timepoint))
+                            .attr('x', (d) => plot.scale.x(d.start_timepoint))
                             .attr(
                                 'width',
                                 (d) =>
-                                    this.scale.x(d.start_timepoint + d.duration) -
-                                    this.scale.x(d.start_timepoint)
+                                    plot.scale.x(d.start_timepoint + d.duration) -
+                                    plot.scale.x(d.start_timepoint)
                             )
                     );
-                //console.log(rects);
-                //this.layout.svg.interrupt().selectAll('*').interrupt();
             });
     };
 }

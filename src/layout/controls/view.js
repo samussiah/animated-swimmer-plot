@@ -20,11 +20,21 @@ export default function view(controls) {
             this.parentNode.insertBefore(label, this);
         });
 
+    // TODO: handle rank calculation for strata
     inputs.on('change', () => {
         const d = form.selectAll('input:checked').datum();
         console.log(`view: ${d.setting}`);
 
         this.settings.view = d.setting;
+
+        this.data.timepoints.forEach(([timepoint, data]) => {
+            // Define mutable rank given current view.
+            data
+                .sort((a,b) => a[`rank${this.settings.view}`] - b[`rank${this.settings.view}`])
+                .forEach((d,i) => {
+                    d.rank = i;
+                });
+        });
 
         if (this.settings.play === false) transitionAnimation.call(this, this.data.timepoint);
     });

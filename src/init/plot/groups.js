@@ -1,17 +1,11 @@
 import groupByResponse from './groups/groupByResponse';
 
-export default function groups() {
-    let g = this.layout.svg
-        .append('g')
-        .style('font', 'bold 12px var(--sans-serif)')
-        .style('font-variant-numeric', 'tabular-nums')
-        .attr('stroke-opacity', 0.6)
-        .attr('fill-opacity', 1)
-        .selectAll('g');
+export default function groups(plot) {
+    let groups = plot.layout.groups.selectAll('g');
 
     return ([timepoint, data], transition) =>
-        (g = g
-            .data(groupByResponse.call(this, data), (d) => d[0])
+        (groups = groups
+            .data(groupByResponse.call(this, plot, data), (d) => d[0])
             .join(
                 (enter) =>
                     enter
@@ -19,7 +13,7 @@ export default function groups() {
                         .attr(
                             'transform',
                             (d) =>
-                                `translate(${this.settings.margin.left},${this.scale.y(
+                                `translate(${this.settings.margin.left},${plot.scale.y(
                                     d[1].rankMin
                                 )})`
                         )
@@ -29,20 +23,20 @@ export default function groups() {
                             //    .attr('text-anchor', 'end')
                             //    .attr('alignment-baseline', 'middle')
                             //    .attr('x', -5)
-                            //    .attr('y', this.scale.y.bandwidth() / 2 + 1)
+                            //    .attr('y', plot.scale.y.bandwidth() / 2 + 1)
                             //    .text((d) => `${d[0]}`);
                             g.append('text')
                                 .classed('asp-text asp-text--percent', true)
                                 .attr('text-anchor', 'end')
                                 .attr('alignment-baseline', 'middle')
                                 .attr('x', -10)
-                                //.attr('y', this.scale.y.bandwidth() / 2 + 1)
+                                //.attr('y', plot.scale.y.bandwidth() / 2 + 1)
                                 .attr(
                                     'y',
                                     (d) =>
-                                        (this.scale.y(d[1].rankMax) - this.scale.y(d[1].rankMin)) /
+                                        (plot.scale.y(d[1].rankMax) - plot.scale.y(d[1].rankMin)) /
                                             2 +
-                                        this.scale.y.bandwidth() / 2 +
+                                        plot.scale.y.bandwidth() / 2 +
                                         1
                                 )
                                 .text((d) => `${d[1].n} (${d[1].pct})`);
@@ -74,7 +68,7 @@ export default function groups() {
                     .attr(
                         'transform',
                         (d) =>
-                            `translate(${this.settings.margin.left},${this.scale.y(d[1].rankMin)})`
+                            `translate(${this.settings.margin.left},${plot.scale.y(d[1].rankMin)})`
                     );
                 g.select('text.asp-text--percent')
                     .transition(transition)
@@ -82,8 +76,8 @@ export default function groups() {
                     .attr(
                         'y',
                         (d) =>
-                            (this.scale.y(d[1].rankMax) - this.scale.y(d[1].rankMin)) / 2 +
-                            this.scale.y.bandwidth() / 2 +
+                            (plot.scale.y(d[1].rankMax) - plot.scale.y(d[1].rankMin)) / 2 +
+                            plot.scale.y.bandwidth() / 2 +
                             1
                     )
                     .text((d) => `${d[1].n} (${d[1].pct})`);
@@ -94,9 +88,9 @@ export default function groups() {
                     .attr(
                         'y2',
                         (d) =>
-                            this.scale.y(d[1].rankMax) -
-                            this.scale.y(d[1].rankMin) +
-                            this.scale.y.bandwidth()
+                            plot.scale.y(d[1].rankMax) -
+                            plot.scale.y(d[1].rankMin) +
+                            plot.scale.y.bandwidth()
                     );
             }));
 }

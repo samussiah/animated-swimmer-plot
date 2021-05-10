@@ -1,7 +1,7 @@
-export default function result() {
+export default function result(data) {
     const set = [
         ...new Set(
-            this.data.mutated.map((d) => `${d.result_order}|${d.result}|${d.result_color}`)
+            data.map((d) => `${d.result_order}|${d.result}|${d.result_color}`)
         ).values(),
     ]
         .map((d) => [+d.split('|')[0], d.split('|')[1], d.split('|')[2]])

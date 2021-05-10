@@ -4,8 +4,8 @@ import color from './scale/color';
 
 export default function scale() {
     return {
-        x: x.call(this),
-        y: y.call(this),
+        x: x.call(this, [this.settings.margin.left, this.settings.width - this.settings.margin.right]),
+        y: y.call(this, this.set.id),
         color: color.call(this),
     };
 }

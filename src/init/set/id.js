@@ -1,5 +1,5 @@
-export default function id() {
-    const set = new Set(this.data.mutated.map((d) => d.id));
+export default function id(data) {
+    const set = new Set(data.map((d) => d.id));
 
     return set;
 }
