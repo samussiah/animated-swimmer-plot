@@ -16,12 +16,12 @@ export default function reset(form) {
         // Break animation loop on reset.
         this.break = true;
 
-        updateTimepoint.call(this, this.settings.timepointMin); // TODO: disable button at maximum timepoint
+        d3.timeout(() => {
+            updateTimepoint.call(this, this.settings.timepointMin); // TODO: disable button at maximum timepoint
+            transitionAnimation.call(this, this.data.timepoint);
 
-        //transitionAnimation.call(this
-
-        //if (this.settings.play)
-        //    runAnimation.call(this);
+            if (this.settings.play) runAnimation.call(this);
+        }, this.settings.duration);
     });
 
     return button;

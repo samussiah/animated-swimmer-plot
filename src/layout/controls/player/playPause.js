@@ -1,4 +1,5 @@
 import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+import toggle from './playPause/toggle';
 import { runAnimation } from '../../../init';
 
 export default function playPause(form) {
@@ -9,18 +10,15 @@ export default function playPause(form) {
     const path = this.util.addIcon.call(this, button, (this.settings.play ? faPause : faPlay).icon);
 
     button.on('click', () => {
-        console.log(this.settings.play ? 'pause' : 'play');
+        toggle.call(this);
 
         // Break animation loop on pause.
-        if (this.settings.play)
-            this.break = true;
+        if (this.settings.play === false && this.break === undefined) this.break = true;
         // Resume animation on play.
-        else
+        else {
+            delete this.break;
             runAnimation.call(this);
-
-        this.settings.play = !this.settings.play;
-        button.attr('title', this.settings.play ? 'Pause animation' : 'Play animation');
-        path.attr('d', (this.settings.play ? faPause : faPlay).icon[4]);
+        }
     });
 
     return button;

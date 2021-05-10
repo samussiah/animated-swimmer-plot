@@ -28,10 +28,10 @@ export default function settings() {
             height: null,
         },
         margin: {
-            top: 40,
+            top: 60,
             right: 0,
             bottom: 20,
-            left: 100,
+            left: 150,
         },
         buttonSize: 50,
         barSize: null,

@@ -1,5 +1,4 @@
 export default function color() {
-    console.log(this.set.result_color);
     return d3
         .scaleOrdinal()
         .domain(this.set.result)

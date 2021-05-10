@@ -51,7 +51,6 @@ body {
         font-weight: normal;
     }
     .asp-main > div {
-        display: inline-block;
     }
 
 /*------------------------------------------------------------------------------------------------\
@@ -60,6 +59,53 @@ body {
 
     .asp-controls {
         width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    /* player */
+
+    .asp-player__form {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .asp-label {
+        width: 25rem;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .asp-label > * {
+        width: 100%;
+    }
+    .asp-output {
+        text-align: center;
+        font-size: 150%;
+        font-weight: bold;
+    }
+
+    /* view */
+
+    .asp-view__form {
+        margin-right: 1rem;
+        display: inline-block;
+        text-align: center;
+    }
+    .asp-view__form span {
+        font-size: 150%;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+/*------------------------------------------------------------------------------------------------\
+  legend
+\------------------------------------------------------------------------------------------------*/
+
+    .asp-legend {
+        position: absolute;
+        top: 0;
     }
 
 /*------------------------------------------------------------------------------------------------\
@@ -68,4 +114,13 @@ body {
 
     .asp-canvas {
         width: 100%;
+    }
+    .asp-g--n text,
+    .asp-text--percent {
+        font-size: 150%;
+        font-weight: bold;
+    }
+    .asp-ticker {
+        font-size: 300%;
+        font-weight: bold;
     }

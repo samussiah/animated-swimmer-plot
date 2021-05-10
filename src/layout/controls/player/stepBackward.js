@@ -1,6 +1,7 @@
 import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
+import toggle from './playPause/toggle';
 import updateTimepoint from './updateTimepoint';
-import { runAnimation } from '../../../init';
+import { transitionAnimation } from '../../../init';
 
 export default function stepBackward(form) {
     const button = this.util
@@ -9,12 +10,16 @@ export default function stepBackward(form) {
         .attr('title', 'Step backward one timepoint');
     const path = this.util.addIcon.call(this, button, faStepBackward.icon);
 
+    // TODO: disable buttoon at minimum timepoint
     button.on('click', () => {
-        updateTimepoint.call(this, this.settings.timepoint - 1); // TODO: disable button at maximum timepoint
-        console.log(this.settings.timepoint);
-        runAnimation.call(this);
-        this.settings.play = false;
-        // pause animation and proceed to previous timepoint
+        this.break = true;
+
+        if (this.settings.play) toggle.call(this);
+
+        d3.timeout(() => {
+            updateTimepoint.call(this, this.settings.timepoint - 1);
+            transitionAnimation.call(this, this.data.timepoint);
+        }, this.settings.duration);
     });
 
     return button;

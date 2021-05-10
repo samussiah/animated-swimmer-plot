@@ -18,6 +18,13 @@ export default function canvas(main) {
         .addElement('g--y-axis', svg, 'g')
         .attr('transform', `translate(${this.settings.margin.left},0)`);
     const labels = this.util.addElement('g--labels', svg, 'g');
+    const ticker = this.util
+        .addElement('ticker', svg, 'text')
+        .attr('text-anchor', 'end')
+        .attr('x', this.settings.width - 18)
+        .attr('y', this.settings.height - this.settings.margin.bottom - 36)
+        .attr('dy', '0.32em');
+    //.text(`Day ${this.data.timepoints[0][0]}`);
 
     return {
         canvas,
@@ -29,5 +36,6 @@ export default function canvas(main) {
         xAxisBottom,
         yAxis,
         labels,
+        ticker,
     };
 }

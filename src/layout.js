@@ -9,7 +9,9 @@ export default function layout() {
     this.settings.width = dimensions.width;
     this.settings.height = dimensions.height;
     const controls = layoutControls.call(this, main);
-    const legend = this.util.addElement('legend', main);
+    const legend = this.util
+        .addElement('legend', main)
+        .style('left', `${this.settings.margin.left}px`);
     const canvas = layoutCanvas.call(this, main);
 
     window.addEventListener('resize', resize.bind(this));
