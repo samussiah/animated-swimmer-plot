@@ -10,7 +10,7 @@ fetch('./response-data.csv')
             data,
             '#container',
             {
-                stratum_var: 'SEX',
+                //stratum_var: 'SEX',
             }
         );
     });

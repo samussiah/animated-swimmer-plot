@@ -115,7 +115,12 @@ body {
     .asp-canvas {
         width: 100%;
     }
-    .asp-g--n text,
+    .asp-canvas--horizontal {
+        width: 50%;
+        display: inline-block;
+    }
+    .asp-g--title,
+    .asp-g--n,
     .asp-text--percent {
         font-size: 150%;
         font-weight: bold;

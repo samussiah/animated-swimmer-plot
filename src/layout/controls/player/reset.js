@@ -18,7 +18,9 @@ export default function reset(form) {
 
         d3.timeout(() => {
             updateTimepoint.call(this, this.settings.timepointMin); // TODO: disable button at maximum timepoint
-            transitionAnimation.call(this, this.data.timepoint);
+            this.plots.forEach((plot) => {
+                transitionAnimation.call(this, plot);
+            });
 
             if (this.settings.play) runAnimation.call(this);
         }, this.settings.duration);

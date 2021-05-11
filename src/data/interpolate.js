@@ -1,5 +1,7 @@
 import currentResponse from './interpolate/currentResponse';
 
+//  input data: one record per ID per visit/response
+// output data: one record per ID per day on study
 export default function interpolate(data) {
     const interpolated = d3.rollup(
         data,
@@ -58,7 +60,6 @@ export default function interpolate(data) {
     );
 
     const flattened = [...interpolated.values()].flatMap((d) => d);
-    console.log(flattened);
 
     return flattened;
 }

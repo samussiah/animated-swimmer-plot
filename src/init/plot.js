@@ -1,6 +1,9 @@
 // layout
 import plotLayout from './plot/layout';
 
+// data
+import plotData from './plot/data';
+
 // set
 import id from './set/id';
 
@@ -15,33 +18,43 @@ import axis from './plot/axis';
 import labels from './plot/labels';
 import ticker from './ticker';
 
-export default function plot(data) {
-    const layout = plotLayout.call(this, this.layout.plots, this.settings.width);
-    const set = {
-        id: id.call(this, data.mutated),
-    };
-    const scale = {
-        x: x.call(this, [this.settings.margin.left, this.settings.width - this.settings.margin.right]),
-        y: y.call(this, set.id),
-    };
-    layout.n
-        .attr(
-            'transform',
-            (d) => `translate(${this.settings.margin.left},${this.settings.margin.top / 2})`
-        )
-        .append('text')
-        .attr('text-anchor', 'end')
-        .attr('alignment-baseline', 'middle')
-        .attr('x', -10)
-        .attr('y', 10)
-        .text(`n=${set.id.size}`);
-
+export default function plot(data = null, stratum = '', i = 0) {
     const plot = {
-        data,
-        layout,
-        set,
-        scale,
+        stratum,
+        i,
     };
+
+    plot.settings = {
+        width: Math.floor(this.settings.width * this.settings.splitFactor),
+        margin: {
+            ...this.settings.margin,
+            left: i % 2 === 0 ? this.settings.margin.right : this.settings.margin.left,
+            right: i % 2 === 0 ? this.settings.margin.left : this.settings.margin.right,
+        },
+        textAnchor: plot.i % 2 === 0 ? 'start' : 'end',
+        sign: plot.i % 2 === 0 ? 1 : -1,
+    };
+    plot.settings.translateX =
+        i % 2 === 0 ? plot.settings.width - plot.settings.margin.right : plot.settings.margin.left;
+    plot.settings.strokeWidth = i === 0 ? plot.settings.margin.right : plot.settings.margin.left;
+
+    plot.layout = plotLayout.call(this, plot);
+
+    plot.data = data === null ? this.data : plotData.call(this, data, stratum);
+
+    plot.set = {
+        id: id.call(this, plot.data.mutated),
+    };
+
+    plot.scale = {
+        x: x.call(this, [
+            plot.settings.margin.left,
+            plot.settings.width - plot.settings.margin.right,
+        ]),
+        y: y.call(this, plot.set.id),
+    };
+
+    plot.layout.n.text(`n=${plot.set.id.size}`);
 
     plot.update = {
         groups: groups.call(this, plot),
@@ -50,6 +63,8 @@ export default function plot(data) {
         labels: labels.call(this, plot),
         ticker: ticker.call(this, plot),
     };
+
+    console.log(plot);
 
     return plot;
 }

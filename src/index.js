@@ -8,7 +8,7 @@ import init from './init';
 export default function animatedSwimmerPlot(_data_, _element_ = 'body', _settings_ = {}) {
     const fdg = {
         element: _element_,
-        settings: Object.assign(settings(), _settings_),
+        settings: Object.assign(settings(), _settings_).update(),
         util,
     };
 

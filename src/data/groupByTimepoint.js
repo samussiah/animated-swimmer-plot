@@ -5,7 +5,7 @@ export default function groupByTimepoint(interpolated, finalTimepoint) {
             // Capture IDs at each timepoint.
             const groupIds = new Set(group.map((d) => d.id));
 
-            // If ID is missing at given timepoint, add final record to 
+            // If ID is missing at given timepoint, add final record to
             finalTimepoint.forEach(([key, value]) => {
                 if (groupIds.has(key) === false) group.push({ ...value });
             });
@@ -48,8 +48,8 @@ export default function groupByTimepoint(interpolated, finalTimepoint) {
 
             // Define mutable rank given current view.
             group
-                .sort((a,b) => a[`rank${this.settings.view}`] - b[`rank${this.settings.view}`])
-                .forEach((d,i) => {
+                .sort((a, b) => a[`rank${this.settings.view}`] - b[`rank${this.settings.view}`])
+                .forEach((d, i) => {
                     d.rank = i;
                 });
 

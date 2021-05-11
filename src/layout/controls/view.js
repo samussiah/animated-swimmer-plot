@@ -27,16 +27,29 @@ export default function view(controls) {
 
         this.settings.view = d.setting;
 
-        this.data.timepoints.forEach(([timepoint, data]) => {
-            // Define mutable rank given current view.
-            data
-                .sort((a,b) => a[`rank${this.settings.view}`] - b[`rank${this.settings.view}`])
-                .forEach((d,i) => {
-                    d.rank = i;
+        // Re-calculate x-domain.
+        const allStates = this.data.interpolated.flatMap((d) => d[`states${this.settings.view}`]);
+        const x1 = d3.min(allStates, (d) => d.start_timepoint);
+        const x2 = d3.max(allStates, (d) => d.start_timepoint + d.duration);
+        this.xDomain = [x1, x2];
+
+        this.plots.forEach((plot) => {
+            plot.data.timepoints.forEach(([timepoint, data]) => {
+                // Define mutable rank given current view.
+                data.sort(
+                    (a, b) => a[`rank${this.settings.view}`] - b[`rank${this.settings.view}`]
+                );
+
+                data.forEach((d, i) => {
+                    d[`rank${plot.stratum}`] = i;
                 });
+            });
         });
 
-        if (this.settings.play === false) transitionAnimation.call(this, this.data.timepoint);
+        if (this.settings.play === false)
+            this.plots.forEach((plot) => {
+                transitionAnimation.call(this, plot);
+            });
     });
 
     return inputs;

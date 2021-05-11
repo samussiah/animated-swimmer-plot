@@ -13,24 +13,24 @@ export default function groups(plot) {
                         .attr(
                             'transform',
                             (d) =>
-                                `translate(${this.settings.margin.left},${plot.scale.y(
+                                `translate(${plot.settings.translateX},${plot.scale.y(
                                     d[1].rankMin
                                 )})`
                         )
                         .call((g) => {
-                            //g.append('text')
-                            //    .classed('asp-text asp-text--group', true)
-                            //    .attr('text-anchor', 'end')
-                            //    .attr('alignment-baseline', 'middle')
-                            //    .attr('x', -5)
-                            //    .attr('y', plot.scale.y.bandwidth() / 2 + 1)
-                            //    .text((d) => `${d[0]}`);
+                            g.append('line')
+                                .classed('asp-line asp-line--group', true)
+                                .attr('x1', (plot.settings.sign * plot.settings.strokeWidth) / 2)
+                                .attr('x2', (plot.settings.sign * plot.settings.strokeWidth) / 2)
+                                .attr('y1', 0)
+                                .attr('y2', 0)
+                                .attr('stroke', (d) => this.scale.color(d[0]))
+                                .attr('stroke-width', plot.settings.strokeWidth - 4);
                             g.append('text')
                                 .classed('asp-text asp-text--percent', true)
-                                .attr('text-anchor', 'end')
+                                .attr('text-anchor', plot.settings.textAnchor)
                                 .attr('alignment-baseline', 'middle')
-                                .attr('x', -10)
-                                //.attr('y', plot.scale.y.bandwidth() / 2 + 1)
+                                .attr('x', plot.settings.sign * 10)
                                 .attr(
                                     'y',
                                     (d) =>
@@ -40,14 +40,6 @@ export default function groups(plot) {
                                         1
                                 )
                                 .text((d) => `${d[1].n} (${d[1].pct})`);
-                            g.append('line')
-                                .classed('asp-line asp-line--group', true)
-                                .attr('x1', -5)
-                                .attr('x2', -5)
-                                .attr('y1', 0)
-                                .attr('y2', 0)
-                                .attr('stroke', (d) => this.scale.color(d[0]))
-                                .attr('stroke-width', 5);
                         }),
                 (update) => update,
                 (exit) => {
@@ -68,7 +60,7 @@ export default function groups(plot) {
                     .attr(
                         'transform',
                         (d) =>
-                            `translate(${this.settings.margin.left},${plot.scale.y(d[1].rankMin)})`
+                            `translate(${plot.settings.translateX},${plot.scale.y(d[1].rankMin)})`
                     );
                 g.select('text.asp-text--percent')
                     .transition(transition)

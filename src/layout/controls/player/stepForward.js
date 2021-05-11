@@ -18,7 +18,9 @@ export default function stepForward(form) {
 
         d3.timeout(() => {
             updateTimepoint.call(this, this.settings.timepoint + 1);
-            transitionAnimation.call(this, this.data.timepoint);
+            this.plots.forEach((plot) => {
+                transitionAnimation.call(this, plot);
+            });
         }, this.settings.duration);
     });
 

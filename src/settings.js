@@ -15,6 +15,8 @@ export default function settings() {
 
         // controls
         view: 'OverallSurvival', // ['OverallSurvival', 'CurrentResponse']
+        split: 'vertical', // ['vertical', 'horizontal']
+        splitFactor: 1,
         play: true,
         timepoint: 0,
         timepointUnit: 'day',
@@ -32,7 +34,7 @@ export default function settings() {
             top: 60,
             right: 0,
             bottom: 20,
-            left: 150,
+            left: 125,
         },
         padding: 0.1,
         buttonSize: 50,
@@ -40,5 +42,14 @@ export default function settings() {
 
         // miscellaneous
         displayIds: false,
+
+        update: function () {
+            if (this.stratum_var) {
+                this.split = 'horizontal';
+                this.splitFactor = 0.5;
+            }
+
+            return this;
+        },
     };
 }

@@ -25,7 +25,9 @@ export default function range(form) {
 
         //d3.timeout(() => {
         updateTimepoint.call(main, +this.value);
-        transitionAnimation.call(main, main.data.timepoint);
+        main.plots.forEach((plot) => {
+            transitionAnimation.call(main, plot);
+        });
         //}, this.settings.duration);
     });
 
