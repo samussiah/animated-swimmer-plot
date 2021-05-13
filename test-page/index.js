@@ -4,6 +4,7 @@ fetch('./response-data.csv')
     .then(text => d3.csvParse(text))
     .then(data => {
         data.forEach(d => {
+            delete d.ADUR;
         });
 
         const instance = animatedSwimmerPlot(

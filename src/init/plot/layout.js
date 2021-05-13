@@ -4,9 +4,9 @@ export default function layout(plot) {
         .classed(`asp-canvas--${this.settings.split}`, true);
     const svg = this.util
         .addElement('svg', canvas, 'svg')
-        .attr('viewBox', [0, 0, plot.settings.width, this.settings.height]);
-    //.attr('width', width)
-    //.attr('height', this.settings.height);
+        //.attr('viewBox', [0, 0, plot.settings.width, this.settings.height]);
+        .attr('width', plot.settings.width)
+        .attr('height', this.settings.height);
     const title = this.util
         .addElement('g--title', svg, 'g')
         .attr(
@@ -44,10 +44,41 @@ export default function layout(plot) {
     const bars = this.util.addElement('g--bars', svg, 'g').attr('fill-opacity', 0.6);
     const xAxisTop = this.util
         .addElement('g--x-axis', svg, 'g')
-        .attr('transform', `translate(0,${this.settings.margin.top})`);
+        .attr('transform', `translate(0,${this.settings.margin.top})`)
+        .call((g) =>
+            this.util
+                .addElement('x-axis__label', g, 'text')
+                .attr(
+                    'x',
+                    plot.settings.mirror
+                        ? plot.settings.width - plot.settings.margin.right - 18
+                        : plot.settings.margin.left + 18
+                )
+                .attr('y', -25)
+                .attr('fill', 'currentColor')
+                .attr('text-anchor', plot.settings.mirror ? 'end' : 'start')
+                .attr('alignment-baseline', 'baseline')
+                .text(plot.settings.mirror ? '← Time (days)' : 'Time (days) →')
+        );
     const xAxisBottom = this.util
         .addElement('g--x-axis', svg, 'g')
-        .attr('transform', `translate(0,${this.settings.height - this.settings.margin.bottom})`);
+        .attr('transform', `translate(0,${this.settings.height - this.settings.margin.bottom})`)
+        .call((g) =>
+            this.util
+                .addElement('x-axis__label', g, 'text')
+                .attr(
+                    'x',
+                    plot.settings.mirror
+                        ? plot.settings.width - plot.settings.margin.right - 18
+                        : plot.settings.margin.left + 18
+                )
+                .attr('y', 25)
+                .attr('fill', 'currentColor')
+                .attr('text-anchor', plot.settings.mirror ? 'end' : 'start')
+                .attr('alignment-baseline', 'hanging')
+                .text(plot.settings.mirror ? '← Time (days)' : 'Time (days) →')
+        );
+
     const yAxis = this.util
         .addElement('g--y-axis', svg, 'g')
         .attr('transform', `translate(${this.settings.margin.left},0)`);
@@ -58,8 +89,13 @@ export default function layout(plot) {
         .attr('text-anchor', 'start');
     const ticker = this.util
         .addElement('ticker', svg, 'text')
-        .attr('text-anchor', 'end')
-        .attr('x', plot.settings.width - plot.settings.margin.right - 18)
+        .attr('text-anchor', plot.settings.mirror ? 'start' : 'end')
+        .attr(
+            'x',
+            plot.settings.mirror
+                ? plot.settings.margin.left + 18
+                : plot.settings.width - plot.settings.margin.right - 18
+        )
         .attr('y', this.settings.height - this.settings.margin.bottom - 36)
         .attr('dy', '0.32em');
     //.text(`Day ${this.data.timepoints[0][0]}`);

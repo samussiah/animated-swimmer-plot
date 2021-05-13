@@ -33,9 +33,16 @@ export default function plot(data = null, stratum = '', i = 0) {
         },
         textAnchor: plot.i % 2 === 0 ? 'start' : 'end',
         sign: plot.i % 2 === 0 ? 1 : -1,
+        mirror: plot.i % 2 === 0 ? true : false,
     };
+    plot.settings.xRange =
+        plot.i % 2 === 0
+            ? [plot.settings.width - plot.settings.margin.right, plot.settings.margin.left]
+            : [plot.settings.margin.left, plot.settings.width - plot.settings.margin.right];
     plot.settings.translateX =
-        i % 2 === 0 ? plot.settings.width - plot.settings.margin.right : plot.settings.margin.left;
+        plot.i % 2 === 0
+            ? plot.settings.width - plot.settings.margin.right
+            : plot.settings.margin.left;
     plot.settings.strokeWidth = i === 0 ? plot.settings.margin.right : plot.settings.margin.left;
 
     plot.layout = plotLayout.call(this, plot);
@@ -47,10 +54,7 @@ export default function plot(data = null, stratum = '', i = 0) {
     };
 
     plot.scale = {
-        x: x.call(this, [
-            plot.settings.margin.left,
-            plot.settings.width - plot.settings.margin.right,
-        ]),
+        x: x.call(this, plot.settings.xRange),
         y: y.call(this, plot.set.id),
     };
 
@@ -63,8 +67,6 @@ export default function plot(data = null, stratum = '', i = 0) {
         labels: labels.call(this, plot),
         ticker: ticker.call(this, plot),
     };
-
-    console.log(plot);
 
     return plot;
 }

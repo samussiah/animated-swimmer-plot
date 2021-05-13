@@ -33,7 +33,7 @@ export default function settings() {
         margin: {
             top: 60,
             right: 0,
-            bottom: 20,
+            bottom: 50,
             left: 125,
         },
         padding: 0.1,

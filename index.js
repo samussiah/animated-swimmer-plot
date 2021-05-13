@@ -397,7 +397,7 @@
             margin: {
                 top: 60,
                 right: 0,
-                bottom: 20,
+                bottom: 50,
                 left: 125,
             },
             padding: 0.1,
@@ -1415,54 +1415,64 @@
     }
 
     function legend() {
-        var _this = this;
-
+        var main = this;
         var width = 64;
-        this.layout.legend
+        var swatches = this.layout.legend
             .selectAll('div')
             .data(this.scale.color.domain())
             .join('div')
-            .style('display', 'inline-block')
-            .call(
-                function (div) {
-                    var _this2 = this;
+            .style('display', 'inline-block');
+        swatches.each(function (d, i) {
+            var _this = this;
 
-                    _newArrowCheck(this, _this);
+            var swatch = d3.select(this);
+            var svg = swatch
+                .append('svg')
+                .attr('width', ''.concat(width, 'px'))
+                .attr('height', ''.concat(width, 'px'));
+            if (i === 0)
+                svg.append('text')
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('alignment-baseline', 'hanging')
+                    .attr('fill', 'black')
+                    .style('font-weight', 'bold')
+                    .style('font-size', width / 4)
+                    .text('RECIST');
+            svg.append('rect')
+                .attr('x', 0)
+                .attr('y', width / 4)
+                .attr('width', width)
+                .attr('height', width - width / 4)
+                .attr(
+                    'fill',
+                    function (d) {
+                        _newArrowCheck(this, _this);
 
-                    var svg = div
-                        .append('svg')
-                        .attr('width', ''.concat(width, 'px'))
-                        .attr('height', ''.concat(width, 'px'));
-                    svg.append('rect')
-                        .attr('x', 0)
-                        .attr('y', 0)
-                        .attr('width', width)
-                        .attr('height', width)
-                        .attr(
-                            'fill',
-                            function (d) {
-                                _newArrowCheck(this, _this2);
+                        return main.scale.color(d);
+                    }.bind(this)
+                );
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', width / 2)
+                .attr('text-anchor', 'middle')
+                .attr('alignment-baseline', 'hanging')
+                .attr('fill', 'white')
+                .style('font-weight', 'bold')
+                .style('font-size', width / 2)
+                .text(
+                    function (d) {
+                        _newArrowCheck(this, _this);
 
-                                return this.scale.color(d);
-                            }.bind(this)
-                        );
-                    svg.append('text')
-                        .attr('x', width / 2)
-                        .attr('y', width / 2)
-                        .attr('text-anchor', 'middle')
-                        .attr('alignment-baseline', 'hanging')
-                        .attr('fill', 'white')
-                        .style('font-weight', 'bold')
-                        .style('font-size', width / 2)
-                        .text(
-                            function (d) {
-                                _newArrowCheck(this, _this2);
-
-                                return d;
-                            }.bind(this)
-                        );
-                }.bind(this)
-            );
+                        return d;
+                    }.bind(this)
+                );
+        });
+        return {
+            width: width,
+            container: this.layout.legend,
+            swatches: swatches,
+        };
     }
 
     function layout$1(plot) {
@@ -1472,10 +1482,9 @@
             .addElement('canvas', this.layout.plots)
             .classed('asp-canvas--'.concat(this.settings.split), true);
         var svg = this.util
-            .addElement('svg', canvas, 'svg')
-            .attr('viewBox', [0, 0, plot.settings.width, this.settings.height]); //.attr('width', width)
-        //.attr('height', this.settings.height);
-
+            .addElement('svg', canvas, 'svg') //.attr('viewBox', [0, 0, plot.settings.width, this.settings.height]);
+            .attr('width', plot.settings.width)
+            .attr('height', this.settings.height);
         var title = this.util
             .addElement('g--title', svg, 'g')
             .attr(
@@ -1530,12 +1539,50 @@
         var bars = this.util.addElement('g--bars', svg, 'g').attr('fill-opacity', 0.6);
         var xAxisTop = this.util
             .addElement('g--x-axis', svg, 'g')
-            .attr('transform', 'translate(0,'.concat(this.settings.margin.top, ')'));
+            .attr('transform', 'translate(0,'.concat(this.settings.margin.top, ')'))
+            .call(
+                function (g) {
+                    _newArrowCheck(this, _this);
+
+                    return this.util
+                        .addElement('x-axis__label', g, 'text')
+                        .attr(
+                            'x',
+                            plot.settings.mirror
+                                ? plot.settings.width - plot.settings.margin.right - 18
+                                : plot.settings.margin.left + 18
+                        )
+                        .attr('y', -25)
+                        .attr('fill', 'currentColor')
+                        .attr('text-anchor', plot.settings.mirror ? 'end' : 'start')
+                        .attr('alignment-baseline', 'baseline')
+                        .text(plot.settings.mirror ? '← Time (days)' : 'Time (days) →');
+                }.bind(this)
+            );
         var xAxisBottom = this.util
             .addElement('g--x-axis', svg, 'g')
             .attr(
                 'transform',
                 'translate(0,'.concat(this.settings.height - this.settings.margin.bottom, ')')
+            )
+            .call(
+                function (g) {
+                    _newArrowCheck(this, _this);
+
+                    return this.util
+                        .addElement('x-axis__label', g, 'text')
+                        .attr(
+                            'x',
+                            plot.settings.mirror
+                                ? plot.settings.width - plot.settings.margin.right - 18
+                                : plot.settings.margin.left + 18
+                        )
+                        .attr('y', 25)
+                        .attr('fill', 'currentColor')
+                        .attr('text-anchor', plot.settings.mirror ? 'end' : 'start')
+                        .attr('alignment-baseline', 'hanging')
+                        .text(plot.settings.mirror ? '← Time (days)' : 'Time (days) →');
+                }.bind(this)
             );
         var yAxis = this.util
             .addElement('g--y-axis', svg, 'g')
@@ -1547,8 +1594,13 @@
             .attr('text-anchor', 'start');
         var ticker = this.util
             .addElement('ticker', svg, 'text')
-            .attr('text-anchor', 'end')
-            .attr('x', plot.settings.width - plot.settings.margin.right - 18)
+            .attr('text-anchor', plot.settings.mirror ? 'start' : 'end')
+            .attr(
+                'x',
+                plot.settings.mirror
+                    ? plot.settings.margin.left + 18
+                    : plot.settings.width - plot.settings.margin.right - 18
+            )
             .attr('y', this.settings.height - this.settings.margin.bottom - 36)
             .attr('dy', '0.32em'); //.text(`Day ${this.data.timepoints[0][0]}`);
 
@@ -1840,6 +1892,23 @@
         var _this = this;
 
         var bars = plot.layout.bars.selectAll('g');
+
+        var getX = function getX(d) {
+            _newArrowCheck(this, _this);
+
+            return plot.settings.mirror
+                ? plot.scale.x(d.start_timepoint + d.duration)
+                : plot.scale.x(d.start_timepoint);
+        }.bind(this);
+
+        var getWidth = function getWidth(d) {
+            _newArrowCheck(this, _this);
+
+            return plot.settings.mirror
+                ? plot.scale.x(d.start_timepoint) - plot.scale.x(d.start_timepoint + d.duration)
+                : plot.scale.x(d.start_timepoint + d.duration) - plot.scale.x(d.start_timepoint);
+        }.bind(this);
+
         return function (_ref, transition) {
             var _this2 = this;
 
@@ -1942,7 +2011,7 @@
                                             function (d) {
                                                 _newArrowCheck(this, _this4);
 
-                                                return plot.scale.x(d.start_timepoint);
+                                                return getX(d);
                                             }.bind(this)
                                         )
                                         .attr(
@@ -1950,10 +2019,7 @@
                                             function (d) {
                                                 _newArrowCheck(this, _this4);
 
-                                                return (
-                                                    plot.scale.x(d.start_timepoint + d.duration) -
-                                                    plot.scale.x(d.start_timepoint)
-                                                );
+                                                return getWidth(d);
                                             }.bind(this)
                                         );
                                 }.bind(this)
@@ -1977,14 +2043,14 @@
         //    .attr('x', this.settings.margin.left + 6)
         //    .attr('y', this.settings.margin.top - 6)
         //    .text(`ID`);
-        var xAxisTop = d3
+        plot.xAxisTop = d3
             .axisTop(plot.scale.x)
             .ticks(this.settings.width / 160)
             .tickSizeOuter(0)
             .tickSizeInner(
                 -(this.settings.height - this.settings.margin.top - this.settings.margin.bottom)
             );
-        var xAxisBottom = d3
+        plot.xAxisBottom = d3
             .axisBottom(plot.scale.x)
             .ticks(this.settings.width / 160)
             .tickSizeOuter(0)
@@ -1992,8 +2058,8 @@
         return function (_, transition) {
             _newArrowCheck(this, _this);
 
-            plot.layout.xAxisTop.transition(transition).call(xAxisTop);
-            plot.layout.xAxisBottom.transition(transition).call(xAxisBottom);
+            plot.layout.xAxisTop.transition(transition).call(plot.xAxisTop);
+            plot.layout.xAxisBottom.transition(transition).call(plot.xAxisBottom);
 
             if (this.settings.view === 'OverallSurvival') {
                 plot.layout.xAxisTop.select('.tick:first-of-type').remove();
@@ -2156,9 +2222,14 @@
             ),
             textAnchor: plot.i % 2 === 0 ? 'start' : 'end',
             sign: plot.i % 2 === 0 ? 1 : -1,
+            mirror: plot.i % 2 === 0 ? true : false,
         };
+        plot.settings.xRange =
+            plot.i % 2 === 0
+                ? [plot.settings.width - plot.settings.margin.right, plot.settings.margin.left]
+                : [plot.settings.margin.left, plot.settings.width - plot.settings.margin.right];
         plot.settings.translateX =
-            i % 2 === 0
+            plot.i % 2 === 0
                 ? plot.settings.width - plot.settings.margin.right
                 : plot.settings.margin.left;
         plot.settings.strokeWidth =
@@ -2169,10 +2240,7 @@
             id: id.call(this, plot.data.mutated),
         };
         plot.scale = {
-            x: x.call(this, [
-                plot.settings.margin.left,
-                plot.settings.width - plot.settings.margin.right,
-            ]),
+            x: x.call(this, plot.settings.xRange),
             y: y.call(this, plot.set.id),
         };
         plot.layout.n.text('n='.concat(plot.set.id.size));
@@ -2183,7 +2251,6 @@
             labels: labels.call(this, plot),
             ticker: ticker.call(this, plot),
         };
-        console.log(plot);
         return plot;
     }
 
@@ -2776,13 +2843,104 @@
         var _this = this;
 
         this.settings.dimensions = getDimensions.call(this, this.layout.main);
+        this.settings.width = this.settings.dimensions.width;
+        this.settings.height = this.settings.dimensions.height;
         this.plots.forEach(
             function (plot) {
+                var _this2 = this;
+
                 _newArrowCheck(this, _this);
 
-                plot.layout.svg
-                    .attr('width', this.settings.dimensions.width)
-                    .attr('height', this.settings.dimensions.height);
+                plot.settings.width = Math.floor(this.settings.width * this.settings.splitFactor);
+                plot.settings.xRange =
+                    plot.i % 2 === 0
+                        ? [
+                              plot.settings.width - plot.settings.margin.right,
+                              plot.settings.margin.left,
+                          ]
+                        : [
+                              plot.settings.margin.left,
+                              plot.settings.width - plot.settings.margin.right,
+                          ];
+                plot.settings.translateX =
+                    plot.i % 2 === 0
+                        ? plot.settings.width - plot.settings.margin.right
+                        : plot.settings.margin.left;
+                plot.layout.svg //.attr('viewBox', [0, 0, plot.settings.width, this.settings.height]);
+                    .attr('width', plot.settings.width)
+                    .attr('height', this.settings.height);
+                plot.layout.title.attr(
+                    'transform',
+                    function (d) {
+                        _newArrowCheck(this, _this2);
+
+                        return 'translate('
+                            .concat(
+                                plot.settings.margin.left +
+                                    (plot.settings.width -
+                                        plot.settings.margin.right -
+                                        plot.settings.margin.left) /
+                                        2,
+                                ','
+                            )
+                            .concat(plot.settings.margin.top / 2, ')');
+                    }.bind(this)
+                );
+                plot.layout.xAxisTop.call(
+                    function (g) {
+                        _newArrowCheck(this, _this2);
+
+                        return g
+                            .select('.asp-x-axis__label')
+                            .attr(
+                                'x',
+                                plot.settings.mirror
+                                    ? plot.settings.width - plot.settings.margin.right - 18
+                                    : plot.settings.margin.left + 18
+                            );
+                    }.bind(this)
+                );
+                plot.layout.xAxisBottom.call(
+                    function (g) {
+                        _newArrowCheck(this, _this2);
+
+                        return g
+                            .select('.asp-x-axis__label')
+                            .attr(
+                                'x',
+                                plot.settings.mirror
+                                    ? plot.settings.width - plot.settings.margin.right - 18
+                                    : plot.settings.margin.left + 18
+                            );
+                    }.bind(this)
+                );
+                plot.layout.ticker.attr(
+                    'x',
+                    plot.settings.mirror
+                        ? plot.settings.margin.left + 18
+                        : plot.settings.width - plot.settings.margin.right - 18
+                );
+                plot.scale.x.range(plot.settings.xRange);
+                plot.xAxisTop = d3
+                    .axisTop(plot.scale.x)
+                    .ticks(this.settings.width / 160)
+                    .tickSizeOuter(0)
+                    .tickSizeInner(
+                        -(
+                            this.settings.height -
+                            this.settings.margin.top -
+                            this.settings.margin.bottom
+                        )
+                    );
+                plot.xAxisBottom = d3
+                    .axisBottom(plot.scale.x)
+                    .ticks(this.settings.width / 160)
+                    .tickSizeOuter(0)
+                    .tickSizeInner(0);
+                plot.scale.y.range([
+                    this.settings.height - this.settings.margin.bottom,
+                    this.settings.margin.top,
+                ]);
             }.bind(this)
         );
     }
@@ -2792,25 +2950,17 @@
         var dimensions = getDimensions.call(this, main);
         this.settings.width = dimensions.width;
         this.settings.height = dimensions.height;
+        var legend = this.util.addElement('legend', main);
+        var plots = this.util.addElement('plots', main);
         var controls = controls$1.call(this, main);
-        var legend = this.util
-            .addElement('legend', main)
-            .style('left', ''.concat(this.settings.margin.left, 'px'));
-        var plots = this.util.addElement('plots', main); //const canvas = layoutCanvas.call(this, plots);
-
         window.addEventListener('resize', resize.bind(this));
         return _objectSpread2(
-            _objectSpread2(
-                {
-                    main: main,
-                },
-                controls
-            ),
-            {},
             {
+                main: main,
                 legend: legend,
-                plots: plots, //...canvas,
-            }
+                plots: plots,
+            },
+            controls
         );
     }
 
@@ -2911,12 +3061,12 @@
                     function (pair, i, pairs) {
                         _newArrowCheck(this, _this3);
 
-                        if (pair[0].duration === undefined)
+                        if (isNaN(pair[0].duration))
                             pair[0].duration = pair[1].timepoint - pair[0].timepoint;
                     }.bind(this)
                 );
                 var last = group[group.length - 1];
-                if (last.duration === undefined)
+                if (isNaN(last.duration))
                     last.duration =
                         last.censor_timepoint !== undefined
                             ? last.censor_timepoint - last.timepoint

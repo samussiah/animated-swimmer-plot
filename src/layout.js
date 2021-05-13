@@ -8,20 +8,16 @@ export default function layout() {
     const dimensions = getDimensions.call(this, main);
     this.settings.width = dimensions.width;
     this.settings.height = dimensions.height;
-    const controls = layoutControls.call(this, main);
-    const legend = this.util
-        .addElement('legend', main)
-        .style('left', `${this.settings.margin.left}px`);
+    const legend = this.util.addElement('legend', main);
     const plots = this.util.addElement('plots', main);
-    //const canvas = layoutCanvas.call(this, plots);
+    const controls = layoutControls.call(this, main);
 
     window.addEventListener('resize', resize.bind(this));
 
     return {
         main,
-        ...controls,
         legend,
         plots,
-        //...canvas,
+        ...controls,
     };
 }

@@ -60,7 +60,7 @@ body {
     .asp-controls {
         width: 100%;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
     }
 
@@ -104,8 +104,8 @@ body {
 \------------------------------------------------------------------------------------------------*/
 
     .asp-legend {
-        position: absolute;
-        top: 0;
+        width: 100%;
+        text-align: center;
     }
 
 /*------------------------------------------------------------------------------------------------\
@@ -124,6 +124,9 @@ body {
     .asp-text--percent {
         font-size: 150%;
         font-weight: bold;
+    }
+    .asp-x-axis__label {
+        font-size: 1.25rem;
     }
     .asp-ticker {
         font-size: 300%;

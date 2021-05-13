@@ -1,6 +1,15 @@
 export default function bars(plot) {
     let bars = plot.layout.bars.selectAll('g');
 
+    const getX = (d) =>
+        plot.settings.mirror
+            ? plot.scale.x(d.start_timepoint + d.duration)
+            : plot.scale.x(d.start_timepoint);
+    const getWidth = (d) =>
+        plot.settings.mirror
+            ? plot.scale.x(d.start_timepoint) - plot.scale.x(d.start_timepoint + d.duration)
+            : plot.scale.x(d.start_timepoint + d.duration) - plot.scale.x(d.start_timepoint);
+
     return ([timepoint, data], transition) => {
         bars = bars
             .data(data, (d) => d.id)
@@ -41,13 +50,8 @@ export default function bars(plot) {
                         rect
                             .transition(transition)
                             .duration(this.settings.duration)
-                            .attr('x', (d) => plot.scale.x(d.start_timepoint))
-                            .attr(
-                                'width',
-                                (d) =>
-                                    plot.scale.x(d.start_timepoint + d.duration) -
-                                    plot.scale.x(d.start_timepoint)
-                            )
+                            .attr('x', (d) => getX(d))
+                            .attr('width', (d) => getWidth(d))
                     );
             });
     };

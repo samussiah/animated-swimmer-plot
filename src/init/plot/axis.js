@@ -11,7 +11,7 @@ export default function axis(plot) {
     //    .attr('y', this.settings.margin.top - 6)
     //    .text(`ID`);
 
-    const xAxisTop = d3
+    plot.xAxisTop = d3
         .axisTop(plot.scale.x)
         .ticks(this.settings.width / 160)
         .tickSizeOuter(0)
@@ -19,15 +19,15 @@ export default function axis(plot) {
             -(this.settings.height - this.settings.margin.top - this.settings.margin.bottom)
         );
 
-    const xAxisBottom = d3
+    plot.xAxisBottom = d3
         .axisBottom(plot.scale.x)
         .ticks(this.settings.width / 160)
         .tickSizeOuter(0)
         .tickSizeInner(0);
 
     return (_, transition) => {
-        plot.layout.xAxisTop.transition(transition).call(xAxisTop);
-        plot.layout.xAxisBottom.transition(transition).call(xAxisBottom);
+        plot.layout.xAxisTop.transition(transition).call(plot.xAxisTop);
+        plot.layout.xAxisBottom.transition(transition).call(plot.xAxisBottom);
 
         if (this.settings.view === 'OverallSurvival') {
             plot.layout.xAxisTop.select('.tick:first-of-type').remove();
