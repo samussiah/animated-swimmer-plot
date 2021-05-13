@@ -32,7 +32,7 @@ export default function settings() {
         },
         margin: {
             top: 60,
-            right: 0,
+            right: 10,
             bottom: 50,
             left: 125,
         },
@@ -42,6 +42,7 @@ export default function settings() {
 
         // miscellaneous
         displayIds: false,
+        criteria: 'RECIST',
 
         update: function () {
             if (this.stratum_var) {

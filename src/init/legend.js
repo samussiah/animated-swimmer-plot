@@ -18,7 +18,7 @@ export default function legend() {
                 .attr('fill', 'black')
                 .style('font-weight', 'bold')
                 .style('font-size', width / 4)
-                .text('RECIST');
+                .text(main.settings.criteria);
         svg.append('rect')
             .attr('x', 0)
             .attr('y', width / 4)

@@ -22,7 +22,8 @@ export default function layout(plot) {
         .attr('text-anchor', 'middle')
         .attr('alignment-baseline', 'middle')
         .attr('y', 5)
-        .text(plot.stratum !== '' ? `${this.settings.stratum_var} = ${plot.stratum}` : null);
+        .text(plot.stratum !== '' ? `${plot.stratum}` : null);
+        //.text(plot.stratum !== '' ? `${this.settings.stratum_var} = ${plot.stratum}` : null);
 
     const n = this.util
         .addElement('g--n', svg, 'g')

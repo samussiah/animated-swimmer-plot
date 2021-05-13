@@ -36,6 +36,7 @@ export async function runAnimation() {
         // Re-calculate x-domain.
         const allStates = this.data.interpolated.flatMap((d) => d[`states${this.settings.view}`]);
         const x1 = d3.min(allStates, (d) => d.start_timepoint);
+        console.log(x1);
         const x2 = d3.max(allStates, (d) => d.start_timepoint + d.duration);
         this.xDomain = [x1, x2];
 

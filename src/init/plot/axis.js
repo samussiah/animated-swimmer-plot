@@ -29,16 +29,16 @@ export default function axis(plot) {
         plot.layout.xAxisTop.transition(transition).call(plot.xAxisTop);
         plot.layout.xAxisBottom.transition(transition).call(plot.xAxisBottom);
 
-        if (this.settings.view === 'OverallSurvival') {
-            plot.layout.xAxisTop.select('.tick:first-of-type').remove();
-            plot.layout.xAxisBottom.select('.tick:first-of-type').remove();
-        }
+        //if (this.settings.view === 'OverallSurvival') {
+        //    plot.layout.xAxisTop.select('.tick:first-of-type').remove();
+        //    plot.layout.xAxisBottom.select('.tick:first-of-type').remove();
+        //}
 
         plot.layout.xAxisTop
             .selectAll('.tick line')
             .attr('stroke', '#999')
             .attr('stroke-opacity', 0.6);
-        //plot.layout.xAxisTop.select('.domain').remove();
-        //plot.layout.xAxisBottom.select('.domain').remove();
+        plot.layout.xAxisTop.select('.domain').remove();
+        plot.layout.xAxisBottom.select('.domain').remove();
     };
 }

@@ -11,7 +11,7 @@ export default function interpolate(data) {
             let state;
             let state_duration;
             let states = [];
-            let total_duration = 0;
+            let total_duration = d3.min(group, d => d.timepoint);
             let sequence = 0;
 
             // TODO: add final state to output data, i.e. the final response/visit/cycle - need to use a pre-defined duration
