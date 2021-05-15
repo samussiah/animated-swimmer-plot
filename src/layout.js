@@ -10,6 +10,7 @@ export default function layout() {
     this.settings.height = dimensions.height;
     const legend = this.util.addElement('legend', main);
     const plots = this.util.addElement('plots', main);
+    const ticker = this.util.addElement('ticker', plots);
     const controls = layoutControls.call(this, main);
 
     window.addEventListener('resize', resize.bind(this));
@@ -18,6 +19,7 @@ export default function layout() {
         main,
         legend,
         plots,
+        ticker,
         ...controls,
     };
 }

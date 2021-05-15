@@ -19,6 +19,8 @@ import labels from './plot/labels';
 import ticker from './ticker';
 
 export default function plot(data = null, stratum = '', i = 0) {
+    if (this.settings.stratum_var === null) i = 1;
+
     const plot = {
         stratum,
         i,

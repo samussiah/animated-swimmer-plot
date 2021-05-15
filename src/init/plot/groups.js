@@ -28,9 +28,11 @@ export default function groups(plot) {
                                 .attr('stroke-width', plot.settings.strokeWidth - 4);
                             g.append('text')
                                 .classed('asp-text asp-text--percent', true)
-                                .attr('text-anchor', plot.settings.textAnchor)
+                                //.attr('text-anchor', plot.settings.textAnchor)
+                                .attr('text-anchor', 'middle')
                                 .attr('alignment-baseline', 'middle')
-                                .attr('x', plot.settings.sign * 10)
+                                //.attr('x', plot.settings.sign * 10)
+                                .attr('x', (plot.settings.sign * plot.settings.strokeWidth) / 2)
                                 .attr(
                                     'y',
                                     (d) =>
@@ -72,6 +74,14 @@ export default function groups(plot) {
                             plot.scale.y.bandwidth() / 2 +
                             1
                     )
+                    .style('display', function (d) {
+                        const el = this;
+                        const style = window
+                            .getComputedStyle(el, null)
+                            .getPropertyValue('font-size');
+                        const fontSize = parseFloat(style);
+                        return d[1].n * plot.scale.y.bandwidth() > fontSize ? null : 'none';
+                    })
                     .text((d) => `${d[1].n} (${d[1].pct})`);
                 const line = g
                     .select('line.asp-line--group')

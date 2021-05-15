@@ -1,5 +1,5 @@
 {
-  "TODO": "add stratification; add overall survival view; implement resize",
+  "TODO": "bars should enter from their start position; add overall survival sort; implement resize",
   "name": "animated-swimmer-plot",
   "version": "0.1.0",
   "description": "an animated swimmer plot of overall survival and response to therapy in oncology trials",

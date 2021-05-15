@@ -31,9 +31,10 @@ body {
     .asp-main {
         width: 100%;
         /*height: calc(100vh - 16px);*/
-        height: 75vh;
+        /*height: 75vh;*/
         position: relative;
         font-family: var(--font-family);
+        display: inline-block;
     }
     .asp-hidden {
         display: none !important;
@@ -51,6 +52,56 @@ body {
         font-weight: normal;
     }
     .asp-main > div {
+    }
+
+/*------------------------------------------------------------------------------------------------\
+  legend
+\------------------------------------------------------------------------------------------------*/
+
+    .asp-legend {
+        width: 100%;
+        text-align: center;
+    }
+
+/*------------------------------------------------------------------------------------------------\
+  canvas
+\------------------------------------------------------------------------------------------------*/
+
+    .asp-plots {
+        width: 100%;
+        display: inline-block;
+        position: relative;
+    }
+    .asp-canvas {
+        width: 100%;
+        display: inline-block;
+    }
+    .asp-canvas--horizontal {
+        width: 50%;
+        display: inline-block;
+    }
+    .asp-g--title {
+        font-size: 150%;
+        font-weight: normal;
+    }
+    .asp-g--n,
+    .asp-text--n-percent {
+        font-size: 100%;
+        font-weight: lighter;
+    }
+    .asp-text--percent {
+        font-weight: bold;
+    }
+    .asp-x-axis__label {
+        font-size: .75rem;
+    }
+    .asp-ticker {
+        font-size: 200%;
+        font-weight: bold;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        bottom: 10px;
     }
 
 /*------------------------------------------------------------------------------------------------\
@@ -99,36 +150,3 @@ body {
         display: inline-block;
     }
 
-/*------------------------------------------------------------------------------------------------\
-  legend
-\------------------------------------------------------------------------------------------------*/
-
-    .asp-legend {
-        width: 100%;
-        text-align: center;
-    }
-
-/*------------------------------------------------------------------------------------------------\
-  canvas
-\------------------------------------------------------------------------------------------------*/
-
-    .asp-canvas {
-        width: 100%;
-    }
-    .asp-canvas--horizontal {
-        width: 50%;
-        display: inline-block;
-    }
-    .asp-g--title,
-    .asp-g--n,
-    .asp-text--percent {
-        font-size: 150%;
-        font-weight: bold;
-    }
-    .asp-x-axis__label {
-        font-size: 1.25rem;
-    }
-    .asp-ticker {
-        font-size: 300%;
-        font-weight: bold;
-    }

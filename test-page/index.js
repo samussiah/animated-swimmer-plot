@@ -3,18 +3,26 @@ fetch('./response-data.csv')
     .then(response => response.text())
     .then(text => d3.csvParse(text, d3.autoType))
     .then(data => {
-        console.log(data);
         data.forEach(d => {
             delete d.ADUR;
             if (d.ADY === 1)
                 d.ADY = Math.ceil(Math.random()*-28);
         });
 
-        const instance = animatedSwimmerPlot(
-            data,
+        const recist = animatedSwimmerPlot(
+            data.filter(d => d.PARAMCAT === 'RECIST 1.1'),
             '#container',
             {
                 stratum_var: 'SEX',
+                //play: false,
             }
         );
+        //const pcwg = animatedSwimmerPlot(
+        //    data.filter(d => d.PARAMCAT !== 'RECIST 1.1'),
+        //    '#container',
+        //    {
+        //        stratum_var: 'SEX',
+        //        criteria: 'PCWG',
+        //    }
+        //);
     });
