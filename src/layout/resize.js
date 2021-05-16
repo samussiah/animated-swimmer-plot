@@ -47,12 +47,6 @@ export default function resize() {
                         : plot.settings.margin.left + 18
                 )
         );
-        plot.layout.ticker.attr(
-            'x',
-            plot.settings.mirror
-                ? plot.settings.margin.left + 18
-                : plot.settings.width - plot.settings.margin.right - 18
-        );
 
         plot.scale.x.range(plot.settings.xRange);
 

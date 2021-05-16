@@ -18,11 +18,12 @@ export default function settings() {
         split: 'vertical', // ['vertical', 'horizontal']
         splitFactor: 1,
         play: true,
-        timepoint: 0,
+        timepoint: 1,
         timepointUnit: 'day',
         timepointMin: null,
         timepointMax: null,
         duration: 250,
+        delay: 5000,
         speedFactor: 50,
 
         // dimensions

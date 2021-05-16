@@ -1,5 +1,4 @@
-//fetch('../../data-library/data/clinical-trials/adam/adrs.csv')
-fetch('./response-data.csv')
+fetch('../response-data.csv')
     .then(response => response.text())
     .then(text => d3.csvParse(text, d3.autoType))
     .then(data => {
@@ -10,13 +9,12 @@ fetch('./response-data.csv')
                 d.ADY = Math.ceil(Math.random()*-28);
         });
 
-        const instance = animatedSwimmerPlot(
-            data.filter(d => d.PARAMCAT === 'RECIST 1.1'),
+        const pcwg = animatedSwimmerPlot(
+            data.filter(d => d.PARAMCAT !== 'RECIST 1.1'),
             '#container',
             {
                 stratum_var: 'SEX',
-                //play: false,
-                delay: 1000,
+                criteria: 'PCWG3',
             }
         );
     });

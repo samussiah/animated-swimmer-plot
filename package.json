@@ -1,5 +1,5 @@
 {
-  "TODO": "bars should enter from their start position; add overall survival sort; implement resize",
+  "TODO": "figure out what's going on with ngative timepoints; bars should enter from their start position; add overall survival sort; fix resize",
   "name": "animated-swimmer-plot",
   "version": "0.1.0",
   "description": "an animated swimmer plot of overall survival and response to therapy in oncology trials",

@@ -385,11 +385,12 @@
             // ['vertical', 'horizontal']
             splitFactor: 1,
             play: true,
-            timepoint: 0,
+            timepoint: 1,
             timepointUnit: 'day',
             timepointMin: null,
             timepointMax: null,
             duration: 250,
+            delay: 5000,
             speedFactor: 50,
             // dimensions
             dimensions: {
@@ -2286,6 +2287,7 @@
                 );
             }.bind(this)
         );
+        this.layout.ticker.text('Study day '.concat(timepoint));
         this.controls.range.input.property('value', timepoint);
         this.controls.range.output.text(
             /*this.settings.timepointUnit*/
@@ -2322,7 +2324,16 @@
                   )
             : [plot.call(this)];
         runAnimation.call(this);
-        if (this.settings.play === false) this['break'] = true;
+        this['break'] = true;
+        this.delayTimeout = d3.timeout(
+            function () {
+                _newArrowCheck(this, _this);
+
+                runAnimation.call(this);
+                if (this.settings.play === false) this['break'] = true;
+            }.bind(this),
+            this.settings.delay
+        );
     }
     function runAnimation() {
         return _runAnimation.apply(this, arguments);
@@ -2355,7 +2366,7 @@
 
                                 case 3:
                                     if ((_step = _iterator.n()).done) {
-                                        _context.next = 21;
+                                        _context.next = 20;
                                         break;
                                     }
 
@@ -2371,18 +2382,14 @@
                                             _newArrowCheck(this, _this2);
 
                                             plot.layout.svg.interrupt();
-                                            plot.layout.ticker.text(
-                                                'Day '.concat(this.settings.timepoint)
-                                            );
                                         }.bind(this)
                                     );
                                     delete this['break'];
-                                    return _context.abrupt('break', 21);
+                                    return _context.abrupt('break', 20);
 
                                 case 9:
                                     // Update timepoint settings, data, and UI components.
-                                    updateTimepoint.call(this, timepoint[0]);
-                                    this.layout.ticker.text('Study Day '.concat(timepoint[0])); // Re-calculate x-domain.
+                                    updateTimepoint.call(this, timepoint[0]); // Re-calculate x-domain.
 
                                     allStates = this.data.interpolated.flatMap(
                                         function (d) {
@@ -2431,7 +2438,7 @@
                                     );
                                     this.transition = transitions; // Await end of all transitions.
 
-                                    _context.next = 19;
+                                    _context.next = 18;
                                     return Promise.allSettled(
                                         transitions.map(
                                             function (transition) {
@@ -2442,28 +2449,28 @@
                                         )
                                     );
 
-                                case 19:
+                                case 18:
                                     _context.next = 3;
                                     break;
 
-                                case 21:
-                                    _context.next = 26;
+                                case 20:
+                                    _context.next = 25;
                                     break;
 
-                                case 23:
-                                    _context.prev = 23;
+                                case 22:
+                                    _context.prev = 22;
                                     _context.t0 = _context['catch'](1);
 
                                     _iterator.e(_context.t0);
 
-                                case 26:
-                                    _context.prev = 26;
+                                case 25:
+                                    _context.prev = 25;
 
                                     _iterator.f();
 
-                                    return _context.finish(26);
+                                    return _context.finish(25);
 
-                                case 29:
+                                case 28:
                                 case 'end':
                                     return _context.stop();
                             }
@@ -2471,7 +2478,7 @@
                     },
                     _callee,
                     this,
-                    [[1, 23, 26, 29]]
+                    [[1, 22, 25, 28]]
                 );
             })
         );
@@ -2489,8 +2496,7 @@
         plot.update.groups(plot.data.timepoint, transition);
         plot.update.bars(plot.data.timepoint, transition);
         plot.update.axis(plot.data.timepoint, transition);
-        if (this.settings.displayIds) plot.update.labels(plot.data.timepoint, transition); //plot.update.ticker(plot.data.timepoint, transition);
-
+        if (this.settings.displayIds) plot.update.labels(plot.data.timepoint, transition);
         return transition;
     }
 
@@ -2921,12 +2927,6 @@
                                     : plot.settings.margin.left + 18
                             );
                     }.bind(this)
-                );
-                plot.layout.ticker.attr(
-                    'x',
-                    plot.settings.mirror
-                        ? plot.settings.margin.left + 18
-                        : plot.settings.width - plot.settings.margin.right - 18
                 );
                 plot.scale.x.range(plot.settings.xRange);
                 plot.xAxisTop = d3

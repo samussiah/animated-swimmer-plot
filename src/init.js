@@ -16,8 +16,13 @@ export default function init() {
         : [initPlot.call(this)];
 
     runAnimation.call(this);
+    this.break = true;
 
-    if (this.settings.play === false) this.break = true;
+    this.delayTimeout = d3.timeout(() => {
+        runAnimation.call(this);
+
+        if (this.settings.play === false) this.break = true;
+    }, this.settings.delay);
 }
 
 export async function runAnimation() {
@@ -26,7 +31,6 @@ export async function runAnimation() {
         if (this.break) {
             this.plots.forEach((plot) => {
                 plot.layout.svg.interrupt();
-                plot.layout.ticker.text(`Day ${this.settings.timepoint}`);
             });
             delete this.break;
             break;
@@ -34,7 +38,6 @@ export async function runAnimation() {
 
         // Update timepoint settings, data, and UI components.
         updateTimepoint.call(this, timepoint[0]);
-        this.layout.ticker.text(`Study Day ${timepoint[0]}`);
 
         // Re-calculate x-domain.
         const allStates = this.data.interpolated.flatMap((d) => d[`states${this.settings.view}`]);
@@ -71,7 +74,6 @@ export function transitionAnimation(plot) {
     plot.update.bars(plot.data.timepoint, transition);
     plot.update.axis(plot.data.timepoint, transition);
     if (this.settings.displayIds) plot.update.labels(plot.data.timepoint, transition);
-    //plot.update.ticker(plot.data.timepoint, transition);
 
     return transition;
 }
