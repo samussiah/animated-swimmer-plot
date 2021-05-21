@@ -2,9 +2,9 @@ import currentResponse from './interpolate/currentResponse';
 
 //  input data: one record per ID per visit/response
 // output data: one record per ID per day on study
-export default function interpolate(data) {
+export default function interpolate(mutated) {
     const interpolated = d3.rollup(
-        data,
+        mutated,
         (group) => {
             const long = [];
 
@@ -14,8 +14,6 @@ export default function interpolate(data) {
             let total_duration = d3.min(group, (d) => d.timepoint);
             let sequence = 0;
 
-            // TODO: add final state to output data, i.e. the final response/visit/cycle - need to use a pre-defined duration
-            //
             // Pair each record for the given participant to define a start and end timepoint.
             group
                 .sort((a, b) => a.timepoint - b.timepoint)
@@ -29,7 +27,7 @@ export default function interpolate(data) {
                             start_timepoint: total_duration, // starting timepoint of current state,
                             duration: 0, // duration of current state
                             sequence,
-                        }); // TODO: retain the total duration up to the current state
+                        });
                         sequence++;
                     }
 

@@ -7,6 +7,6 @@ export default function updateTimepoint(timepoint) {
     this.layout.ticker.text(`Study day ${timepoint}`);
     this.controls.range.input.property('value', timepoint);
     this.controls.range.output.text(
-        `${/*this.settings.timepointUnit*/ 'Day'} ${this.settings.timepoint}`
+        `${/*this.settings.timepointUnit*/ 'Study day'} ${this.settings.timepoint}`
     );
 }

@@ -32,18 +32,18 @@ export default function settings() {
             height: null,
         },
         margin: {
-            top: 60,
+            top: 40,
             right: 10,
             bottom: 50,
             left: 125,
         },
         padding: 0.1,
-        buttonSize: 50,
+        buttonSize: 25,
         barSize: null,
 
         // miscellaneous
         displayIds: false,
-        criteria: 'RECIST',
+        criteria: 'Response',
 
         update: function () {
             if (this.stratum_var) {

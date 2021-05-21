@@ -26,7 +26,8 @@ export default function init() {
 }
 
 export async function runAnimation() {
-    for (const timepoint of this.data.timepoints.filter((d) => d[0] >= this.settings.timepoint)) {
+    for (const timepoint of this.data.timepoints
+        .filter((d) => d[0] >= this.settings.timepoint && d[0] <= this.settings.timepointMax)) {
         // Break loop.
         if (this.break) {
             this.plots.forEach((plot) => {
@@ -41,8 +42,16 @@ export async function runAnimation() {
 
         // Re-calculate x-domain.
         const allStates = this.data.interpolated.flatMap((d) => d[`states${this.settings.view}`]);
+        //const x1 = this.settings.view === 'OverallSurvival'
+        //    ? Math.max(
+        //        d3.min(allStates, (d) => d.start_timepoint),
+        //        this.settings.timepointMin
+        //    ) : d3.min(allStates, (d) => d.start_timepoint);
         const x1 = d3.min(allStates, (d) => d.start_timepoint);
-        const x2 = d3.max(allStates, (d) => d.start_timepoint + d.duration);
+        const x2 = Math.min(
+            d3.max(allStates, (d) => d.start_timepoint + d.duration),
+            this.settings.timepointMax
+        );
         this.xDomain = [x1, x2];
 
         // Transition plots to next timepoint.

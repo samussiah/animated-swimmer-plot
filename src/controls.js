@@ -7,8 +7,12 @@ export default function controls() {
     };
 
     // Update settings.
-    this.settings.timepointMin = d3.min(this.data.timepoints, ([d]) => d);
-    this.settings.timepointMax = d3.max(this.data.timepoints, ([d]) => d);
+    this.settings.timepointMin = this.settings.timeopintMin !== null
+        ? this.settings.timepointMin
+        : d3.min(this.data.timepoints, ([d]) => d);
+    this.settings.timepointMax = this.settings.timepointMax !== null
+        ? this.settings.timepointMax
+        : d3.max(this.data.timepoints, ([d]) => d);
     this.settings.timepoint =
         this.settings.timepoint !== undefined &&
         this.settings.timepoint >= this.settings.timepointMin &&

@@ -71,6 +71,10 @@ body {
         width: 100%;
         display: inline-block;
         position: relative;
+        margin: 12px 0;
+        padding: 12px 0;
+        border-top: 1px solid #aaa;
+        border-bottom: 1px solid #aaa;
     }
     .asp-canvas {
         width: 100%;
@@ -142,7 +146,7 @@ body {
     .asp-view__form {
         margin-right: 1rem;
         display: inline-block;
-        text-align: center;
+        /*text-align: center;*/
     }
     .asp-view__form span {
         font-size: 150%;
