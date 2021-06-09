@@ -1,4 +1,4 @@
-import rankOverallSurvival from './groupByTimepoint/rankOverallSurvival'
+import rankOverallSurvival from './groupByTimepoint/rankOverallSurvival';
 import rankCurrentResponse from './groupByTimepoint/rankCurrentResponse';
 import rank from './groupByTimepoint/rank';
 

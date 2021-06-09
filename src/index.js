@@ -12,11 +12,11 @@ export default function animatedSwimmerPlot(_data_, _element_ = 'body', _setting
         util,
     };
 
-    fdg.layout = layout.call(fdg);
-    fdg.data = data.call(fdg, _data_);
-    fdg.controls = controls.call(fdg);
+    fdg.layout = layout.call(fdg); // DOM manipulation
+    fdg.data = data.call(fdg, _data_); // data manipulation
+    fdg.controls = controls.call(fdg); // update controls
 
-    init.call(fdg);
+    init.call(fdg); // initialize display
 
     return fdg;
 }

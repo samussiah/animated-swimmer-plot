@@ -17,7 +17,7 @@ export default function bars(plot) {
                 (enter) =>
                     enter
                         .append('g')
-                .attr('class', d => `asp-g--bar asp-g--${d.id}`)
+                        .attr('class', (d) => `asp-g--bar asp-g--${d.id}`)
                         .attr('height', plot.scale.y.bandwidth())
                         .attr('y', plot.scale.y(plot.set.id.size)),
                 (update) => update,

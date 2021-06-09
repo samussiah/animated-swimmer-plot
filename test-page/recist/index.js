@@ -3,6 +3,7 @@ fetch('../response-data.csv')
     .then(text => d3.csvParse(text, d3.autoType))
     .then(data => {
         data.forEach(d => {
+            delete d.ACOLOR;
             delete d.ADUR;
 
             if (d.ADY === 1)

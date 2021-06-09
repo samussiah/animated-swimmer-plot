@@ -17,7 +17,7 @@ fetch('./response-data.csv')
                 stratum_var: 'SEX',
                 //play: false,
                 delay: 1000,
-                timepointMin: 0,
+                //timepointMin: 0,
                 timepointMax: 365,
             }
         );

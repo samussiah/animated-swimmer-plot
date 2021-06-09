@@ -18,7 +18,7 @@ export default function settings() {
         split: 'vertical', // ['vertical', 'horizontal']
         splitFactor: 1,
         play: true,
-        timepoint: 1,
+        timepoint: null,
         timepointUnit: 'day',
         timepointMin: null,
         timepointMax: null,
@@ -32,7 +32,7 @@ export default function settings() {
             height: null,
         },
         margin: {
-            top: 40,
+            top: 60,
             right: 10,
             bottom: 50,
             left: 125,

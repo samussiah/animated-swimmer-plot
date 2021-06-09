@@ -26,8 +26,9 @@ export default function init() {
 }
 
 export async function runAnimation() {
-    for (const timepoint of this.data.timepoints
-        .filter((d) => d[0] >= this.settings.timepoint && d[0] <= this.settings.timepointMax)) {
+    for (const timepoint of this.data.timepoints.filter(
+        (d) => d[0] >= this.settings.timepoint && d[0] <= this.settings.timepointMax
+    )) {
         // Break loop.
         if (this.break) {
             this.plots.forEach((plot) => {
