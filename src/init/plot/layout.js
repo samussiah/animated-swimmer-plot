@@ -82,7 +82,11 @@ export default function layout(plot) {
                 .attr('fill', 'currentColor')
                 .attr('text-anchor', plot.settings.mirror ? 'end' : 'start')
                 .attr('alignment-baseline', 'hanging')
-                .text(plot.settings.mirror ? '← Time (days)' : 'Time (days) →')
+                .text(
+                    plot.settings.mirror
+                        ? `← Time (${this.settings.timepointUnit}s)`
+                        : `Time (${this.settings.timepointUnit}s) →`
+                )
         );
 
     const yAxis = this.util

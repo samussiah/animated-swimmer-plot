@@ -1,7 +1,7 @@
 export default function legend() {
     const main = this;
-    const width = 128;
-    const height = width / 2;
+    const width = this.settings.width / this.scale.color.domain().length;
+    const height = 50;
     const swatches = this.layout.legend
         .selectAll('div')
         .data(this.scale.color.domain())
@@ -23,14 +23,16 @@ export default function legend() {
         svg.append('rect')
             .attr('x', 0)
             .attr('y', height / 4)
-            .attr('width', width)
-            .attr('height', height)
+            .attr('rx', '8px')
+            .attr('ry', '8px')
+            .attr('width', width - 4)
+            .attr('height', height - height / 4)
             .attr('fill', (d) => main.scale.color(d));
         svg.append('text')
             .attr('x', width / 2)
-            .attr('y', height / 2)
+            .attr('y', height / 4 + (3.25 * height) / 8)
             .attr('text-anchor', 'middle')
-            .attr('alignment-baseline', 'hanging')
+            .attr('alignment-baseline', 'middle')
             .attr('fill', 'white')
             .style('font-weight', 'bold')
             .style('font-size', height / 3)
