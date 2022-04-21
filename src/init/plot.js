@@ -60,7 +60,7 @@ export default function plot(data = null, stratum = '', i = 0) {
         y: y.call(this, plot.set.id),
     };
 
-    plot.layout.n.text(`n=${plot.set.id.size}`);
+    plot.layout.n.text(this.settings.redact_numbers ? `N=xx` : `N=${plot.set.id.size}`);
 
     plot.update = {
         groups: groups.call(this, plot),

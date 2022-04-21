@@ -13,7 +13,7 @@ export default function getDuration(mutated) {
 
             if (isNaN(last.duration))
                 last.duration =
-                    last.censor_timepoint !== undefined
+                    last.censor_timepoint !== undefined && last.censor_timepoint > last.timepoint
                         ? last.censor_timepoint - last.timepoint
                         : 1;
         },

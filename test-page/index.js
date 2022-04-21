@@ -6,8 +6,8 @@ fetch('./response-data.csv')
         data.forEach(d => {
             delete d.ADUR;
 
-            if (d.ADY === 1)
-                d.ADY = Math.ceil(Math.random()*-28);
+            //if (d.ADY === 1)
+            //    d.ADY = Math.ceil(Math.random()*-28);
         });
 
         const instance = animatedSwimmerPlot(
@@ -16,9 +16,12 @@ fetch('./response-data.csv')
             {
                 stratum_var: 'SEX',
                 //play: false,
-                delay: 1000,
+                delay: 0,
+                duration: 25,
                 //timepointMin: 0,
                 timepointMax: 365,
+                //redact_numbers: true,
+                //shuffle: false,
             }
         );
     });

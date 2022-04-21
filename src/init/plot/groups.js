@@ -82,7 +82,9 @@ export default function groups(plot) {
                         const fontSize = parseFloat(style);
                         return d[1].n * plot.scale.y.bandwidth() > fontSize ? null : 'none';
                     })
-                    .text((d) => `${d[1].n} (${d[1].pct})`);
+                    .text((d) =>
+                        this.settings.redact_numbers ? `n (xx%)` : `${d[1].n} (${d[1].pct})`
+                    );
                 const line = g
                     .select('line.asp-line--group')
                     .transition(transition)

@@ -227,7 +227,6 @@ export default function encodeResponse(datum) {
                 datum.result_color = '#d6604d';
                 break;
 
-
             // Confirmed Progressive Disease
             case 'pdc':
                 datum.result_color = '#d6604d';

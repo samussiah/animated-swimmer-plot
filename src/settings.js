@@ -15,11 +15,13 @@ export default function settings() {
 
         // controls
         view: 'OverallSurvival', // ['OverallSurvival', 'CurrentResponse']
+        sort: 'CurrentResponse', // ['CurrentResponse', 'Best Response']
         split: 'vertical', // ['vertical', 'horizontal']
         splitFactor: 1,
         play: true,
         timepoint: null,
         timepointUnit: 'day',
+        timepointPrefix: 'Study',
         timepointMin: null,
         timepointMax: null,
         duration: 250,
@@ -44,6 +46,8 @@ export default function settings() {
         // miscellaneous
         displayIds: false,
         criteria: 'Response',
+        redact_numbers: false,
+        shuffle: true,
 
         update: function () {
             if (this.stratum_var) {
