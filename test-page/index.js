@@ -14,14 +14,14 @@ fetch('./response-data.csv')
             data.filter(d => d.PARAMCAT === 'RECIST 1.1'),
             '#container',
             {
-                //stratum_var: 'SEX',
+                stratum_var: 'SEX',
                 //play: false,
                 delay: 0,
                 duration: 25,
                 //timepointMin: 0,
                 timepointMax: 365,
-                redact_numbers: true,
-                shuffle: false,
+                //redact_numbers: true,
+                //shuffle: false,
             }
         );
     });
